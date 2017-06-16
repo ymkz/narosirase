@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, RefreshControl } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
 import { refresh } from '../ducks/data'
-import Subtitle from '../components/Subtitlle'
 
 export default class Novel extends Component {
   constructor (props) {

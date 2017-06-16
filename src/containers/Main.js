@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import ActionButton from 'react-native-action-button'
-import Nothing from '../components/Nothing'
+import Zero from '../components/Zero'
 import Novel from '../components/Novel'
 
 class Main extends Component {
@@ -11,7 +11,7 @@ class Main extends Component {
     return (
       <View style={styles.container}>
         {this.props.data.length === 0
-          ? <Nothing />
+          ? <Zero />
           : <Novel data={this.props.data} dispatch={this.props.dispatch} />
         }
         <ActionButton buttonColor='rgba(231, 76, 60, 1)' onPress={() => Actions.add(this.props.dispatch)} />
