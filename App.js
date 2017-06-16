@@ -37,11 +37,11 @@ export default class App extends Component {
     if (this.state.hydrated) {
       return (
         <Provider store={store}>
-          <RouterWithRedux hideNavBar>
+          <RouterWithRedux>
             <Scene key='root'>
-              <Scene key='main' title='main' component={Main} />
-              <Scene key='add' title='add' component={Add} direction='vertical' />
-              <Scene key='web' title='web' component={Web} />
+              <Scene key='main' title='小説リスト' component={Main} />
+              <Scene key='add' title='追加' component={Add} direction='vertical' hideNavBar />
+              <Scene key='web' title='ウェブ' component={Web} hideNavBar />
             </Scene>
           </RouterWithRedux>
         </Provider>

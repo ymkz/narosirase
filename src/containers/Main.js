@@ -14,7 +14,7 @@ class Main extends Component {
           ? <Nothing />
           : <Novel data={this.props.data} dispatch={this.props.dispatch} />
         }
-        <ActionButton buttonColor='rgba(231,76,60,1)' onPress={() => Actions.add(this.props.dispatch)} />
+        <ActionButton buttonColor='rgba(231, 76, 60, 1)' onPress={() => Actions.add(this.props.dispatch)} />
       </View>
     )
   }
@@ -30,6 +30,7 @@ export default connect(mapStateToProps)(Main)
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: 64
   }
 })
