@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Keyboard } from 'react-native'
+import { StyleSheet, View, Keyboard, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import { add, reset } from '../ducks/data'
+import { add } from '../ducks/data'
 
 export default class Main extends Component {
   constructor (props) {
@@ -20,6 +20,11 @@ export default class Main extends Component {
     } else {
       this.setState({ text: text, error: false, disabled: false })
     }
+  }
+
+  handleCancel = () => {
+    Keyboard.dismiss()
+    Actions.pop()
   }
 
   handleSubmit = () => {
@@ -45,6 +50,9 @@ export default class Main extends Component {
   render () {
     return (
       <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.cancel} onPress={this.handleCancel}>Cancel</Text>
+        </View>
         <View style={styles.form}>
           <FormLabel>NCODE</FormLabel>
           <FormInput onChangeText={this.handleChangeText} autoCapitalize='none' keyboardType='url' autoFocus />
@@ -53,7 +61,6 @@ export default class Main extends Component {
           }
         </View>
         <Button title='追加' onPress={this.handleSubmit} disabled={this.state.disabled} style={styles.submit} />
-        <Button title='RESET(:debug)' onPress={() => this.props.dispatch(reset())} style={styles.submit} />
       </View>
     )
   }
@@ -62,8 +69,18 @@ export default class Main extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
-    paddingTop: 100
+    marginTop: 20
+  },
+  header: {
+    height: 40,
+    paddingRight: 20,
+    alignItems: 'flex-end',
+    justifyContent: 'center'
+  },
+  cancel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#757575'
   },
   form: {
     margin: 8

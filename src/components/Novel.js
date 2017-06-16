@@ -46,16 +46,17 @@ export default class Novel extends Component {
         refreshControl={
           <RefreshControl refreshing={this.state.refreshing} onRefresh={this.handleRefresh} />
         }>
-        <List>
+        <List containerStyle={styles.container}>
           {this.props.data.map((item, i) => (
             <ListItem
               key={i}
               title={item.title}
               titleStyle={styles.title}
-              subtitle={<Subtitle item={item} />}
-              rightIcon={{ name: 'fiber-new' }}
+              subtitle={`${item.writer}\n${`${item.ep_now}話 / 全${item.ep_last}話`}`}
+              subtitleStyle={styles.subtitle}
+              rightIcon={{ name: 'fiber-new', color: 'deepskyblue' }}
               hideChevron={item.ep_now === item.ep_last}
-              onPress={() => Actions.web({ item: item, dispatch: this.props.dispatch })}
+              onPress={() => Actions.web({ item: item, dispatch: this.props.dispatch, title: item.title })}
               onLongPress={this.handleRemove}
             />
           ))}
@@ -66,7 +67,17 @@ export default class Novel extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 0
+  },
   title: {
-    fontSize: 14
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingBottom: 6,
+    marginLeft: 0,
+    color: '#646464'
+  },
+  subtitle: {
+    marginLeft: 0
   }
 })

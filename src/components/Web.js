@@ -1,5 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, WebView } from 'react-native'
+import { StyleSheet, View, WebView, StatusBar } from 'react-native'
+import ActionButton from 'react-native-action-button'
+import { Icon } from 'react-native-elements'
+import { Actions } from 'react-native-router-flux'
 import { patch } from '../ducks/data'
 
 export default ({ item, dispatch }) => {
@@ -22,6 +25,7 @@ export default ({ item, dispatch }) => {
         source={{ uri: `http://ncode.syosetu.com/${item.ncode}${item.ep_now === 0 ? '/' : `/${item.ep_now}`}` }}
         onNavigationStateChange={handleChangeWebViewState}
       />
+      <ActionButton buttonColor='rgba(189, 198, 207, 0.85)' icon={<Icon name='close' color='#fff' />} onPress={Actions.pop} />
     </View>
   )
 }
@@ -29,6 +33,6 @@ export default ({ item, dispatch }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20
+    marginTop: StatusBar.currentHeight || 20
   }
 })
