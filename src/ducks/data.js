@@ -17,7 +17,7 @@ export default createReducer({
     data: [...state.data.filter(item => item.ncode !== payload.ncode), payload]
   }),
   [remove]: (state, payload) => Object.assign({}, state, {
-    data: [...state.data.filter(item => item.ncode !== payload.ncode)]
+    data: [...state.data.filter(item => item.ncode !== payload)]
   }),
   [refresh]: (state, payload) => Object.assign({}, state, {
     data: [...state.data.filter(item => item.ncode !== payload.ncode), payload]

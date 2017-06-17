@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, ScrollView, RefreshControl } from 'react-native'
+import { StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
-import { refresh } from '../ducks/data'
+import { refresh, remove } from '../ducks/data'
 
 export default class Novel extends Component {
   constructor (props) {
@@ -13,7 +13,7 @@ export default class Novel extends Component {
   }
 
   handleRefresh = () => {
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
     this.props.data.map(item => {
       fetch(`http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`, {
         'Content-Type': 'application/json',
@@ -35,8 +35,15 @@ export default class Novel extends Component {
     })
   }
 
-  handleRemove = () => {
-    console.log('long-press: remove')
+  handleRemove = (item) => {
+    Alert.alert(
+      'この小説をを削除する',
+      item.title,
+      [
+        { text: 'キャンセル', style: 'cancel', onPress: () => console.log('remove is canceled') },
+        { text: '削除', style: 'destructive', onPress: () => this.props.dispatch(remove(item.ncode)) }
+      ]
+    )
   }
 
   render () {
@@ -56,7 +63,7 @@ export default class Novel extends Component {
               rightIcon={{ name: 'fiber-new', color: 'deepskyblue' }}
               hideChevron={item.ep_now === item.ep_last}
               onPress={() => Actions.web({ item: item, dispatch: this.props.dispatch, title: item.title })}
-              onLongPress={this.handleRemove}
+              onLongPress={() => this.handleRemove(item)}
             />
           ))}
         </List>
