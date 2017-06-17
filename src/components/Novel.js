@@ -12,27 +12,25 @@ export default class Novel extends Component {
     }
   }
 
-  handleRefresh = () => {
+  handleRefresh = async () => {
     this.setState({ refreshing: true })
-    this.props.data.map(item => {
-      fetch(`http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`, {
-        'Content-Type': 'application/json',
-        'Accepted': 'application/json'
-      }).then(response => {
-        return response.json()
-      }).then(json => {
-        this.props.dispatch(refresh({
-          title: json[1].title,
-          writer: json[1].writer,
-          ncode: json[1].ncode,
-          ep_last: json[1].general_all_no,
-          ep_now: item.ep_now
-        }))
-        this.setState({ refreshing: false })
-      }).catch(error => {
-        console.log(error)
-      })
-    })
+    const option = {
+      'Content-Type': 'application/json',
+      'Accepted': 'application/json'
+    }
+    for (let item of this.props.data) {
+      const url = `http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`
+      const response = await fetch(url, option)
+      const json = await response.json()
+      this.props.dispatch(refresh({
+        ncode: json[1].ncode,
+        title: json[1].title,
+        writer: json[1].writer,
+        ep_last: json[1].general_all_no,
+        ep_now: item.ep_now
+      }))
+    }
+    this.setState({ refreshing: false })
   }
 
   handleRemove = (item) => {
