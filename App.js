@@ -28,7 +28,7 @@ export default class App extends Component {
   }
 
   componentWillMount () {
-    persistStore(store, { storage: AsyncStorage }, () => {
+    persistStore(store, { storage: AsyncStorage, blacklist: 'notify' }, () => {
       this.setState({ hydrated: true })
     })
   }
