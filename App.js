@@ -38,10 +38,10 @@ export default class App extends Component {
       return (
         <Provider store={store}>
           <RouterWithRedux>
-            <Scene key='root'>
+            <Scene key='root' hideNavBar>
               <Scene key='main' title='小説リスト' component={Main} />
-              <Scene key='add' title='追加' component={Add} direction='vertical' hideNavBar />
-              <Scene key='web' title='ウェブ' component={Web} hideNavBar />
+              <Scene key='add' title='追加' component={Add} direction='vertical' />
+              <Scene key='web' title='ウェブ' component={Web} />
             </Scene>
           </RouterWithRedux>
         </Provider>

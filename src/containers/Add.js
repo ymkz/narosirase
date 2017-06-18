@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Keyboard, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import { add } from '../ducks/data'
+import { add, reset } from '../ducks/data'
 
 export default class Main extends Component {
   constructor (props) {
@@ -61,6 +61,7 @@ export default class Main extends Component {
           }
         </View>
         <Button title='追加' onPress={this.handleSubmit} disabled={this.state.disabled} style={styles.submit} />
+        <Button title='reset' onPress={() => this.props.dispatch(reset())} style={styles.submit} />
       </View>
     )
   }

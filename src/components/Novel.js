@@ -19,16 +19,21 @@ export default class Novel extends Component {
       'Accepted': 'application/json'
     }
     for (let item of this.props.data) {
-      const url = `http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`
-      const response = await fetch(url, option)
-      const json = await response.json()
-      this.props.dispatch(refresh({
-        ncode: json[1].ncode,
-        title: json[1].title,
-        writer: json[1].writer,
-        ep_last: json[1].general_all_no,
-        ep_now: item.ep_now
-      }))
+      try {
+        const url = `http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`
+        const response = await fetch(url, option)
+        const json = await response.json()
+        this.props.dispatch(refresh({
+          ncode: json[1].ncode,
+          title: json[1].title,
+          writer: json[1].writer,
+          ep_last: json[1].general_all_no,
+          ep_now: item.ep_now
+        }))
+      } catch (exeption) {
+        console.log(exeption)
+        this.setState({ refreshing: false })
+      }
     }
     this.setState({ refreshing: false })
   }

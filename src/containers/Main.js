@@ -22,7 +22,7 @@ class Main extends Component {
 
 function mapStateToProps ({ data }) {
   return {
-    data: data.data
+    data
   }
 }
 
@@ -31,6 +31,6 @@ export default connect(mapStateToProps)(Main)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 64
+    marginTop: 20
   }
 })
