@@ -44,7 +44,7 @@ export default class Novel extends Component {
       item.title,
       [
         { text: 'キャンセル', style: 'cancel', onPress: () => console.log('remove is canceled') },
-        { text: '削除', style: 'destructive', onPress: () => this.props.dispatch(remove(item.ncode)) }
+        { text: '削除', style: 'destructive', onPress: () => this.props.dispatch(remove(item)) }
       ]
     )
   }

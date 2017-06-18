@@ -11,7 +11,7 @@ const initialState = []
 export default createReducer({
   [add]: (state, payload) => state.filter(item => item.ncode === payload.ncode).length > 0 ? state : [payload, ...state],
   [patch]: (state, payload) => state.map(item => item.ncode === payload.ncode ? payload : item),
-  [remove]: (state, payload) => [...state.data.filter(item => item.ncode !== payload)],
+  [remove]: (state, payload) => state.filter(item => item.ncode !== payload.ncode),
   [refresh]: (state, payload) => state.map(item => item.ncode === payload.ncode ? payload : item),
   [reset]: state => initialState
 }, initialState)
