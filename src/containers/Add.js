@@ -3,6 +3,7 @@ import { StyleSheet, View, Keyboard, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import { add, reset } from '../ducks/data'
+import { notify, hide } from '../ducks/notify'
 
 export default class Main extends Component {
   constructor (props) {
@@ -43,6 +44,8 @@ export default class Main extends Component {
         ep_last: json[1].general_all_no,
         ep_now: 0
       }))
+      this.props.dispatch(notify('新しい小説を追加しました'))
+      setTimeout(() => this.props.dispatch(hide()), 3000)
     })
     Actions.pop()
   }

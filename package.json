@@ -22,6 +22,7 @@
     "react-native-action-button": "^2.6.9",
     "react-native-elements": "^0.12.2",
     "react-native-router-flux": "^3.39.2",
+    "react-native-statusbar-alert": "^0.2.0",
     "react-native-vector-icons": "^4.2.0",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
@@ -32,8 +33,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "react-native-scripts": "0.0.31",
     "jest-expo": "~1.0.1",
+    "react-native-scripts": "0.0.31",
     "react-test-renderer": "16.0.0-alpha.6",
     "standard": "^10.0.2"
   }

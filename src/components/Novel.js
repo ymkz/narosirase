@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
 import { refresh, remove } from '../ducks/data'
+import { notify, hide } from '../ducks/notify'
 
 export default class Novel extends Component {
   constructor (props) {
@@ -36,17 +37,25 @@ export default class Novel extends Component {
       }
     }
     this.setState({ refreshing: false })
+    this.props.dispatch(notify('小説情報を更新しました'))
+    setTimeout(() => this.props.dispatch(hide()), 3000)
   }
 
-  handleRemove = (item) => {
+  handleLongPress = (item) => {
     Alert.alert(
       'この小説をを削除する',
       item.title,
       [
         { text: 'キャンセル', style: 'cancel', onPress: () => console.log('remove is canceled') },
-        { text: '削除', style: 'destructive', onPress: () => this.props.dispatch(remove(item)) }
+        { text: '削除', style: 'destructive', onPress: () => this.handleRemove(item) }
       ]
     )
+  }
+
+  handleRemove = (item) => {
+    this.props.dispatch(remove(item))
+    this.props.dispatch(notify('小説を削除しました'))
+    setTimeout(() => this.props.dispatch(hide()), 3000)
   }
 
   render () {
@@ -66,7 +75,7 @@ export default class Novel extends Component {
               rightIcon={{ name: 'fiber-new', color: 'deepskyblue' }}
               hideChevron={item.ep_now === item.ep_last}
               onPress={() => Actions.web({ item: item, dispatch: this.props.dispatch, title: item.title })}
-              onLongPress={() => this.handleRemove(item)}
+              onLongPress={() => this.handleLongPress(item)}
             />
           ))}
         </List>
