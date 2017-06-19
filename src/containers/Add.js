@@ -31,22 +31,28 @@ export default class Main extends Component {
   handleSubmit = () => {
     Keyboard.dismiss()
     this.setState({ disabled: true })
-    fetch(`http://api.syosetu.com/novelapi/api?ncode=${this.state.text}&out=json`, {
-      'Content-Type': 'application/json',
-      'Accepted': 'application/json'
-    }).then(response => {
-      return response.json()
-    }).then(json => {
-      this.props.dispatch(add({
-        title: json[1].title,
-        writer: json[1].writer,
-        ncode: json[1].ncode,
-        ep_last: json[1].general_all_no,
-        ep_now: 0
-      }))
-      this.props.dispatch(notify('新しい小説を追加しました'))
+    if (this.props.data.filter(item => item.ncode === this.state.text).length > 0) {
+      this.props.dispatch(notify('既に存在する小説です'))
       setTimeout(() => this.props.dispatch(hide()), 3000)
-    })
+    } else {
+      fetch(`http://api.syosetu.com/novelapi/api?ncode=${this.state.text}&out=json`, {
+        'Content-Type': 'application/json',
+        'Accepted': 'application/json'
+      }).then(response => {
+        return response.json()
+      }).then(json => {
+        const payload = {
+          ncode: json[1].ncode,
+          title: json[1].title,
+          writer: json[1].writer,
+          ep_last: json[1].general_all_no,
+          ep_now: 0
+        }
+        this.props.dispatch(add(payload))
+        this.props.dispatch(notify('新しい小説を追加しました'))
+        setTimeout(() => this.props.dispatch(hide()), 3000)
+      })
+    }
     Actions.pop()
   }
 

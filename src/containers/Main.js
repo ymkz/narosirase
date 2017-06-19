@@ -21,7 +21,7 @@ class Main extends Component {
           ? <Zero />
           : <Novel data={this.props.data} dispatch={this.props.dispatch} />
         }
-        <ActionButton buttonColor='rgba(231, 76, 60, 1)' onPress={() => Actions.add(this.props.dispatch)} />
+        <ActionButton buttonColor='rgba(231, 76, 60, 1)' onPress={() => Actions.add({ dispatch: this.props.dispatch, data: this.props.data })} />
       </View>
     )
   }

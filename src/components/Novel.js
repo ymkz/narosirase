@@ -13,6 +13,10 @@ export default class Novel extends Component {
     }
   }
 
+  sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
   handleRefresh = async () => {
     this.setState({ refreshing: true })
     const option = {
@@ -24,6 +28,7 @@ export default class Novel extends Component {
         const url = `http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`
         const response = await fetch(url, option)
         const json = await response.json()
+        console.log(json)
         this.props.dispatch(refresh({
           ncode: json[1].ncode,
           title: json[1].title,
@@ -65,9 +70,9 @@ export default class Novel extends Component {
           <RefreshControl refreshing={this.state.refreshing} onRefresh={this.handleRefresh} />
         }>
         <List containerStyle={styles.container}>
-          {this.props.data.map((item, i) => (
+          {this.props.data.map(item => (
             <ListItem
-              key={i}
+              key={item.ncode}
               title={item.title}
               titleStyle={styles.title}
               subtitle={`${item.writer}\n${`${item.ep_now}話 / 全${item.ep_last}話`}`}
