@@ -13,9 +13,7 @@ export default class Novel extends Component {
     }
   }
 
-  sleep (ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
+  sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
   handleRefresh = async () => {
     this.setState({ refreshing: true })
@@ -25,10 +23,10 @@ export default class Novel extends Component {
     }
     for (let item of this.props.data) {
       try {
+        await this.sleep(200)
         const url = `http://api.syosetu.com/novelapi/api?ncode=${item.ncode}&out=json`
         const response = await fetch(url, option)
         const json = await response.json()
-        console.log(json)
         this.props.dispatch(refresh({
           ncode: json[1].ncode,
           title: json[1].title,

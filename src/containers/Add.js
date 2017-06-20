@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Keyboard, Text } from 'react-native'
+import { StyleSheet, View, Keyboard, Text, PanResponder } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import { add, reset } from '../ducks/data'
@@ -13,6 +13,16 @@ export default class Main extends Component {
       disabled: true,
       error: false
     }
+  }
+
+  componentWillMount () {
+    this.panResponder = PanResponder.create({
+      onShouldBlockNativeResponder: (e, gesture) => true,
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onStartShouldSetPanResponderCapture: (e, gesture) => true,
+      onPanResponderTerminationRequest: (e, gesture) => true,
+      onPanResponderGrant: (e, gesture) => Keyboard.dismiss()
+    })
   }
 
   handleChangeText = (text) => {
@@ -58,7 +68,7 @@ export default class Main extends Component {
 
   render () {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} {...this.panResponder.panHandlers}>
         <View style={styles.header}>
           <Text style={styles.cancel} onPress={this.handleCancel}>Cancel</Text>
         </View>
