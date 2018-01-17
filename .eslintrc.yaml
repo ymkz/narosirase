@@ -1,0 +1,41 @@
+---
+parser: babel-eslint
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:react-native/all
+  - plugin:import/warnings
+  - plugin:import/errors
+  - prettier
+  - prettier/react
+plugins:
+  - react
+  - react-native
+  - import
+  - prettier
+rules:
+  no-console: off
+  react/prop-types: off
+  import/order: error
+  prettier/prettier: 
+    - error
+    -
+      singleQuote: true
+      semi: false
+settings:
+  import/ignore:
+    - expo
+env:
+  es6: true
+  node: true
+  jest: true
+  browser: true
+  react-native/react-native: true
+parserOptions:
+  sourceType: module
+  ecmaVersion: 2017
+  ecmaFeatures:
+    experimentalObjectRestSpread: true
+    experimentalDecorators: true
+    classes: true
+    jsx: true
