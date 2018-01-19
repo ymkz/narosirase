@@ -16,9 +16,21 @@
     "clean:cache": "rimraf node_modules && yarn cache clean && yarn"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.2.2",
     "expo": "^24.0.2",
     "react": "16.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
+    "react-native-cell-components": "^0.4.1",
+    "react-native-statusbar-alert": "^0.4.0",
+    "react-native-swipe-gestures": "^1.0.2",
+    "react-native-typography": "^1.2.1",
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "^1.0.0-beta.27",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-act": "^1.5.1",
+    "redux-persist": "^5.4.0",
+    "uri-js": "^3.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^6.0.2",

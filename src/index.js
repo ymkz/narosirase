@@ -1,22 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { colors } from './constants'
+import { AppLoading } from 'expo'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/es/integration/react'
+import { store, persistor } from './store'
+import Navigation from './navigation'
 
 const App = () => (
-  <View style={styles.container}>
-    <Text>Open up App.js to start working on your app!</Text>
-    <Text>Changes you make will automatically reload.</Text>
-    <Text>Shake your phone to open the developer menu.</Text>
-  </View>
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={<AppLoading />}>
+      <Navigation />
+    </PersistGate>
+  </Provider>
 )
 
 export default App
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.snowWhite,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})

@@ -25,6 +25,7 @@ rules:
 settings:
   import/ignore:
     - expo
+    - react-native-cell-components
 env:
   es6: true
   node: true
