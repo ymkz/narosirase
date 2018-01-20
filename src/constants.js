@@ -7,5 +7,8 @@ export const constraints = {
   statusBarHeight: Constants.statusBarHeight,
   alertHeight: Constants.statusBarHeight * 2,
   headerHeight: 96,
-  searchHeight: 36
+  searchHeight: 36,
+  separatorHeight: 48,
+  separatorpadding: 24,
+  scrollOffset: 96
 }

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Alert from './Alert'
 import Setting from './Setting'
 import Addition from './Addition'
+import Reader from './Reader'
 
 const Navigation = StackNavigator(
   {
@@ -17,6 +18,9 @@ const Navigation = StackNavigator(
       navigationOptions: {
         gesturesEnabled: false
       }
+    },
+    Reader: {
+      screen: Reader
     }
   },
   {

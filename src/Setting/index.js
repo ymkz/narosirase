@@ -1,17 +1,16 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StyleSheet, View, Button } from 'react-native'
 import { materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import { connect } from 'react-redux'
 import { constraints } from '../constants'
+import { sleep } from '../functions'
 import { show, patch, hide } from '../Alert/modules'
 import Box from './Box'
 
 const MyButton = ({ title, onPress }) => (
   <Button title={title} onPress={onPress} />
 )
-
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const handlePress = async dispatch => {
   dispatch(show())
@@ -31,16 +30,17 @@ class SettingContainer extends React.PureComponent {
     return (
       <View style={styles.container}>
         <MyButton title="ActionSheet" onPress={() => this.actionSheet.open()} />
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-        <Button
+        <MyButton
           title="Alert"
           onPress={() => handlePress(this.props.dispatch)}
         />
-        <Button
-          title="To"
+        <MyButton
+          title="To Addition"
           onPress={() => this.props.navigation.navigate('Addition')}
+        />
+        <MyButton
+          title="To Reader"
+          onPress={() => this.props.navigation.navigate('Reader')}
         />
         <ActionSheet
           ref={ref => (this.actionSheet = ref)}

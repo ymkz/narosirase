@@ -5,7 +5,7 @@ import { materialColors } from 'react-native-typography'
 import { parse } from 'uri-js'
 import Header from './Header'
 import Searchbar from './Searchbar'
-// uri: 'https://www.google.co.jp/search?q='
+// uri: 'https://www.google.co.jp/search?q=' フリーワード検索?
 
 class AdditionContainer extends React.PureComponent {
   constructor(props) {
