@@ -11,7 +11,6 @@ extends:
 plugins:
   - react
   - react-native
-  - import
   - prettier
 rules:
   no-console: off

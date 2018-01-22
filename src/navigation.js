@@ -4,14 +4,15 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation'
 import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import Alert from './Alert'
-import Setting from './Setting'
+import Novel from './Novel'
 import Addition from './Addition'
 import Reader from './Reader'
+import Setting from './Setting'
 
 const Navigation = StackNavigator(
   {
-    Setting: {
-      screen: Setting
+    Novel: {
+      screen: Novel
     },
     Addition: {
       screen: Addition,
@@ -21,6 +22,9 @@ const Navigation = StackNavigator(
     },
     Reader: {
       screen: Reader
+    },
+    Setting: {
+      screen: Setting
     }
   },
   {

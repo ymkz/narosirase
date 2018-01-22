@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   },
   episode: {
     color: materialColors.blackPrimary,
-    lineHeight: 15
+    textAlignVertical: 'center'
   }
 })

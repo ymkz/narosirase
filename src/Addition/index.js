@@ -2,10 +2,17 @@ import React from 'react'
 import { StyleSheet, View, WebView, Keyboard } from 'react-native'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { materialColors } from 'react-native-typography'
+import { connect } from 'react-redux'
 import { parse } from 'uri-js'
+import { option, status } from '../constants'
+import {
+  errorHandler,
+  novelObjectMapper,
+  fetchNovelContents
+} from '../functions'
+import { add } from '../Novel/modules'
 import Header from './Header'
 import Searchbar from './Searchbar'
-// uri: 'https://www.google.co.jp/search?q=' フリーワード検索?
 
 class AdditionContainer extends React.PureComponent {
   constructor(props) {
@@ -36,18 +43,33 @@ class AdditionContainer extends React.PureComponent {
   }
 
   handleNavigationStateChange = ({ url }) => {
-    this.setState({ input: url, valid: RegExp('ncode.syosetu.com').test(url) })
+    this.setState({
+      input: url,
+      valid: RegExp('ncode.syosetu.com').test(url)
+    })
   }
 
-  handleSubmit = () => {
+  handleAddition = async () => {
     if (!this.state.valid) {
       return false
     } else {
-      const parsedURL = parse(this.state.input)
-      const pathnames = parsedURL.path.split('/')
+      const pathnames = parse(this.state.input).path.split('/')
       const ncode = pathnames[1]
-      const ep = Number(pathnames[2]) || 0
-      console.log(`ncode: ${ncode}, ep: ${ep}`)
+      const index = Number(pathnames[2]) || 0
+      const url = `http://api.syosetu.com/novelapi/api?ncode=${ncode}&out=json`
+      const response = await fetch(url, option).catch(errorHandler)
+      const json = await response.json()
+      const data = novelObjectMapper(json[1])
+      const view = await fetchNovelContents(
+        `https://ncode.syosetu.com/${ncode}/${index}`
+      )
+      const payload = {
+        ...data,
+        index,
+        view,
+        status: status.reading
+      }
+      this.props.dispatch(add(payload))
       this.props.navigation.goBack()
     }
   }
@@ -58,7 +80,7 @@ class AdditionContainer extends React.PureComponent {
         <Header
           navigation={this.props.navigation}
           valid={this.state.valid}
-          handleSubmit={this.handleSubmit}
+          handleSubmit={this.handleAddition}
         />
         <Searchbar
           value={this.state.input}
@@ -85,7 +107,7 @@ class AdditionContainer extends React.PureComponent {
   }
 }
 
-export default AdditionContainer
+export default connect(({ novel }) => ({ novel }))(AdditionContainer)
 
 const styles = StyleSheet.create({
   container: {

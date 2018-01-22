@@ -6,10 +6,7 @@ import { constraints } from '../constants'
 
 const AdditionHeaderComponent = ({ navigation, index, all }) => (
   <View style={styles.container}>
-    <TouchableOpacity
-      style={styles.contents}
-      onPress={() => navigation.goBack()}
-    >
+    <TouchableOpacity onPress={() => navigation.goBack()}>
       <View style={styles.back}>
         <Entypo
           name="chevron-thin-left"
@@ -18,12 +15,12 @@ const AdditionHeaderComponent = ({ navigation, index, all }) => (
         />
         <Text style={[human.caption1, styles.text]}>Back</Text>
       </View>
-      <View>
-        <Text style={[human.caption1, styles.episode]}>
-          {index} / {all}
-        </Text>
-      </View>
     </TouchableOpacity>
+    <View>
+      <Text style={[human.caption1, styles.episode]}>
+        {index} / {all}
+      </Text>
+    </View>
   </View>
 )
 
@@ -31,15 +28,13 @@ export default AdditionHeaderComponent
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: iOSColors.white,
-    height: constraints.statusBarHeight * 2,
-    paddingTop: constraints.statusBarHeight
-  },
-  contents: {
     alignItems: 'center',
+    backgroundColor: iOSColors.white,
     flexDirection: 'row',
+    height: constraints.statusBarHeight * 2,
     justifyContent: 'space-between',
-    paddingHorizontal: 4
+    paddingHorizontal: 4,
+    paddingTop: constraints.statusBarHeight
   },
   back: {
     alignItems: 'center',

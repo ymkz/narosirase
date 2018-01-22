@@ -1,58 +1,67 @@
 import React from 'react'
 import { AppLoading } from 'expo'
 import { StyleSheet, View, ScrollView, Text } from 'react-native'
-import { human, materialColors } from 'react-native-typography'
+import {
+  human,
+  systemWeights,
+  iOSColors,
+  materialColors
+} from 'react-native-typography'
+import { connect } from 'react-redux'
+import moment from 'moment'
 import { canMovePrev, canMoveNext, fetchNovelContents } from '../functions'
+import { patch } from '../Novel/modules'
 import Header from './Header'
 import Separator from './Separator'
 import Title from './Title'
 import Chapter from './Chapter'
 import Episode from './Episode'
 
-class ReaderContainer extends React.Component {
+class ReaderContainer extends React.PureComponent {
   constructor() {
     super()
     this.state = {
       canMovePrev: false,
       canMoveNext: false,
-      loading: false,
-      index: 0,
-      data: null
+      loading: false
     }
   }
 
-  async componentDidMount() {
-    this.handleUpdate(this.state.index)
+  promoteReading = async index => {
+    this.setState({ loading: true })
+    const view = await fetchNovelContents(
+      `https://ncode.syosetu.com/${this.props.novel.ncode}/${index}`
+    )
+    const payload = {
+      ...this.props.novel,
+      index,
+      view
+    }
+    this.props.dispatch(patch(payload))
+    this.setState({
+      loading: false
+    })
   }
 
   handleScroll = async ({ nativeEvent }) => {
-    if (canMovePrev(nativeEvent) && this.state.index !== 0) {
+    if (canMovePrev(nativeEvent) && this.props.novel.index !== 0) {
       this.setState({ canMovePrev: true })
-    } else if (canMoveNext(nativeEvent) /* && this.state.index !== last */) {
+    } else if (
+      canMoveNext(nativeEvent) &&
+      this.props.novel.index !== this.props.novel.episodes
+    ) {
       this.setState({ canMoveNext: true })
     } else {
       this.setState({ canMovePrev: false, canMoveNext: false })
     }
   }
 
-  handleUpdate = async index => {
-    this.setState({ loading: true })
-    const data = await fetchNovelContents(
-      `https://ncode.syosetu.com/n7500bd/${index}`
-    )
-    this.setState({
-      data,
-      index,
-      loading: false
-    })
-  }
-
   handleResponderRelease = async () => {
     if (this.state.canMovePrev) {
-      this.handleUpdate(this.state.index - 1)
+      this.promoteReading(this.props.novel.index - 1)
     }
     if (this.state.canMoveNext) {
-      this.handleUpdate(this.state.index + 1)
+      this.promoteReading(this.props.novel.index + 1)
     }
   }
 
@@ -61,28 +70,43 @@ class ReaderContainer extends React.Component {
       <View style={styles.container}>
         <Header
           navigation={this.props.navigation}
-          index={this.state.index}
-          all={24}
+          index={this.props.novel.index}
+          all={this.props.novel.episodes}
         />
-        {this.state.loading || !this.state.data ? (
+        {this.state.loading ? (
           <AppLoading />
-        ) : this.state.data.index === 0 ? (
+        ) : this.props.novel.index === 0 ? (
           <ScrollView
             scrollEventThrottle={16}
             onScroll={this.handleScroll}
             onResponderRelease={this.handleResponderRelease}
             contentContainerStyle={styles.contentsContainer}
           >
-            <Title title={this.state.data.title} />
+            <Title
+              title={this.props.novel.title}
+              writer={this.props.novel.writer}
+            />
+            <View style={styles.indexContainer}>
+              <Text
+                style={[human.footnote, systemWeights.semibold, styles.index]}
+              >
+                目次
+              </Text>
+              <Text style={[human.caption1, systemWeights.thin, styles.info]}>
+                {this.props.novel.episodes}話{' '}
+                {moment(this.props.novel.lastPostedAt).format('YYYY/M/D')} 公開,
+                {moment(this.props.novel.lastUpdatedAt).format('YYYY/M/D')} 更新
+              </Text>
+            </View>
             <View style={styles.chapters}>
-              {this.state.data.chapters.map(chapter => (
+              {this.props.novel.view.chapters.map(chapter => (
                 <View key={chapter.chapter}>
                   <Chapter chapter={chapter.chapter} />
                   {chapter.episodes.map(episode => (
                     <Episode
                       key={episode.index}
                       subtitle={episode.subtitle}
-                      handlePress={() => this.handleUpdate(episode.index)}
+                      handlePress={() => this.promoteReading(episode.index)}
                     />
                   ))}
                 </View>
@@ -99,19 +123,19 @@ class ReaderContainer extends React.Component {
           >
             <View style={styles.subtitleContainer}>
               <Text style={[human.title3, styles.subtitle]}>
-                {this.state.data.subtitle}
+                {this.props.novel.view.subtitle}
               </Text>
             </View>
             <Text style={[human.subhead, styles.text]}>
-              {this.state.data.prologue}
+              {this.props.novel.view.prologue}
             </Text>
             <Separator text="まえがき" />
             <Text style={[human.subhead, styles.text]}>
-              {this.state.data.body}
+              {this.props.novel.view.body}
             </Text>
             <Separator text="あとがき" />
             <Text style={[human.subhead, styles.text]}>
-              {this.state.data.epilogue}
+              {this.props.novel.view.epilogue}
             </Text>
           </ScrollView>
         )}
@@ -120,7 +144,11 @@ class ReaderContainer extends React.Component {
   }
 }
 
-export default ReaderContainer
+export default connect(
+  ({ novel }, { navigation: { state: { params: { novel: { ncode } } } } }) => ({
+    novel: novel.filter(item => item.ncode === ncode)[0]
+  })
+)(ReaderContainer)
 
 const styles = StyleSheet.create({
   container: {
@@ -132,6 +160,21 @@ const styles = StyleSheet.create({
   },
   contentsContainer: {
     paddingVertical: 64
+  },
+  indexContainer: {
+    alignItems: 'center',
+    borderBottomColor: iOSColors.gray,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingBottom: 8
+  },
+  index: {
+    color: materialColors.blackPrimary
+  },
+  info: {
+    color: iOSColors.gray
   },
   subtitleContainer: {
     alignItems: 'center',
