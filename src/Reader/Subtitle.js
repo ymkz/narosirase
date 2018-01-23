@@ -4,7 +4,7 @@ import { human, materialColors } from 'react-native-typography'
 
 const SubtitleComponent = ({ subtitle }) => (
   <View style={styles.container}>
-    <Text style={[human.title3, styles.subtitle]}>{subtitle}</Text>
+    <Text style={[human.body, styles.subtitle]}>{subtitle}</Text>
   </View>
 )
 

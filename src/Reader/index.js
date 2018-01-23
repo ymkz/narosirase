@@ -76,7 +76,7 @@ class ReaderContainer extends React.PureComponent {
         />
         {this.state.loading ? (
           <AppLoading />
-        ) : this.props.novel.index === 0 ? (
+        ) : isNovelIndex(this.props.novel) ? (
           <View style={styles.wrapper}>
             <ScrollView
               scrollEventThrottle={16}

@@ -67,30 +67,50 @@ class NovelContainer extends React.PureComponent {
     this.actionSheet.open()
   }
 
-  handleToReading = () => {
+  handleToReading = async () => {
+    StatusBar.setBarStyle('light-content', true)
+    this.props.dispatch(alertShow('小説を読むに移動しました'))
     this.props.dispatch(
       novelPatch({ ...this.state.novel, status: status.reading })
     )
     this.actionSheet.close()
+    await sleep(alertDelay)
+    this.props.dispatch(alertHide())
+    StatusBar.setBarStyle('dark-content', true)
   }
 
-  handleToPending = () => {
+  handleToPending = async () => {
+    StatusBar.setBarStyle('light-content', true)
+    this.props.dispatch(alertShow('小説をあとで読むに移動しました'))
     this.props.dispatch(
-      novelPatch({ ...this.state.novel, status: status.reading })
+      novelPatch({ ...this.state.novel, status: status.pending })
     )
     this.actionSheet.close()
+    await sleep(alertDelay)
+    this.props.dispatch(alertHide())
+    StatusBar.setBarStyle('dark-content', true)
   }
 
-  handleToArchive = () => {
+  handleToArchive = async () => {
+    StatusBar.setBarStyle('light-content', true)
+    this.props.dispatch(alertShow('小説をアーカイブに移動しました'))
     this.props.dispatch(
-      novelPatch({ ...this.state.novel, status: status.reading })
+      novelPatch({ ...this.state.novel, status: status.archive })
     )
     this.actionSheet.close()
+    await sleep(alertDelay)
+    this.props.dispatch(alertHide())
+    StatusBar.setBarStyle('dark-content', true)
   }
 
-  handleRemove = () => {
+  handleRemove = async () => {
+    StatusBar.setBarStyle('light-content', true)
+    this.props.dispatch(alertShow('小説を削除しました'))
     this.props.dispatch(novelRemove(this.state.novel))
     this.actionSheet.close()
+    await sleep(alertDelay)
+    this.props.dispatch(alertHide())
+    StatusBar.setBarStyle('dark-content', true)
   }
 
   render() {
