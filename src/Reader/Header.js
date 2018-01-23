@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import { human, iOSColors, materialColors } from 'react-native-typography'
+import { human, materialColors } from 'react-native-typography'
 import { Entypo } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
@@ -29,7 +29,7 @@ export default AdditionHeaderComponent
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: iOSColors.white,
+    backgroundColor: materialColors.whitePrimary,
     flexDirection: 'row',
     height: constraints.statusBarHeight * 2,
     justifyContent: 'space-between',

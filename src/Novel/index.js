@@ -1,95 +1,139 @@
 import React from 'react'
-import { StyleSheet, View, Button } from 'react-native'
+import { StyleSheet, View, FlatList, RefreshControl } from 'react-native'
 import { materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import { connect } from 'react-redux'
-import { constraints } from '../constants'
-import { sleep } from '../functions'
-import { show, patch, hide } from '../Alert/modules'
+import {
+  constraints,
+  status,
+  option,
+  patchDelay,
+  alertDelay
+} from '../constants'
+import { sleep, novelObjectMapper } from '../functions'
+import { alertShow, alertPatch, alertHide } from '../Alert/modules'
+import { novelPatch, novelRemove } from './modules'
+import Header from './Header'
+import Empty from './Empty'
+import Separator from './Separator'
+import Item from './Item'
 import Box from './Box'
 
-const MyButton = ({ title, onPress }) => (
-  <Button title={title} onPress={onPress} />
-)
-
-const handlePress = async dispatch => {
-  dispatch(show())
-  dispatch(patch('payload'))
-  await sleep(3000)
-  dispatch(patch('更新が完了しました'))
-  await sleep(2000)
-  dispatch(hide())
-}
-
 class SettingContainer extends React.PureComponent {
-  state = {
-    novel: null
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false,
+      novel: null
+    }
+  }
+
+  handleRefresh = async () => {
+    this.setState({ refreshing: true })
+    this.props.dispatch(alertShow('更新を開始しました'))
+    for (let i = 0; i < this.props.novel.length; i++) {
+      await sleep(patchDelay)
+      this.props.dispatch(alertPatch(`${i + 1} / ${this.props.novel.length}`))
+      const url = `http://api.syosetu.com/novelapi/api?ncode=${
+        this.props.novel[i].ncode
+      }&out=json`
+      const response = await fetch(url, option).catch(() =>
+        this.setState({ refreshing: false })
+      )
+      const json = await response.json()
+      const data = novelObjectMapper(json[1])
+      const payload = {
+        ...this.props.novel[i],
+        ...data
+      }
+      this.props.dispatch(novelPatch(payload))
+    }
+    this.setState({ refreshing: false })
+    this.props.dispatch(alertPatch('更新が完了しました'))
+    await sleep(alertDelay)
+    this.props.dispatch(alertHide())
+  }
+
+  handleActionSheet = novel => {
+    this.setState({ novel })
+    this.actionSheet.open()
+  }
+
+  handleToReading = () => {
+    this.props.dispatch(
+      novelPatch({ ...this.state.novel, status: status.reading })
+    )
+    this.actionSheet.close()
+  }
+
+  handleToPending = () => {
+    this.props.dispatch(
+      novelPatch({ ...this.state.novel, status: status.reading })
+    )
+    this.actionSheet.close()
+  }
+
+  handleToArchive = () => {
+    this.props.dispatch(
+      novelPatch({ ...this.state.novel, status: status.reading })
+    )
+    this.actionSheet.close()
+  }
+
+  handleRemove = () => {
+    this.props.dispatch(novelRemove(this.state.novel))
+    this.actionSheet.close()
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <MyButton title="ActionSheet" onPress={() => this.actionSheet.open()} />
-        <MyButton
-          title="Alert"
-          onPress={() => handlePress(this.props.dispatch)}
-        />
-        <MyButton
-          title="To Addition"
-          onPress={() => this.props.navigation.navigate('Addition')}
-        />
-        <MyButton
-          title="To Reader"
-          onPress={() =>
-            this.props.navigation.navigate('Reader', {
-              novel: this.props.novel[0]
-            })
+        <Header navigation={this.props.navigation} />
+        <FlatList
+          data={this.props.novel}
+          ItemSeparatorComponent={Separator}
+          keyExtractor={({ ncode }) => ncode}
+          ListEmptyComponent={Empty}
+          refreshing={this.state.refreshing}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.handleRefresh}
+            />
           }
-        />
-        <MyButton
-          title="To Setting"
-          onPress={() => this.props.navigation.navigate('Setting')}
+          renderItem={({ item }) => (
+            <Item
+              novel={item}
+              navigation={this.props.navigation}
+              handleActionSheet={this.handleActionSheet}
+              dispatch={this.props.dispatch}
+            />
+          )}
+          style={styles.flatListContainer}
         />
         <ActionSheet
           ref={ref => (this.actionSheet = ref)}
           mode="list"
-          onOpen={() =>
-            this.setState({
-              novel: { ncode: 'n1111', title: 'これが小説のタイトトルです' }
-            })
-          }
           onClose={() => this.setState({ novel: null })}
         >
           <View style={styles.actionSheetContainer}>
             <Box
               icon="chrome-reader-mode"
               text="reading"
-              onPress={() =>
-                this.actionSheet.close(() => console.log(this.state))
-              }
+              onPress={this.handleToReading}
             />
             <Box
               icon="watch-later"
               text="pending"
-              onPress={() =>
-                this.actionSheet.close(() => console.log('pending'))
-              }
+              onPress={this.handleToPending}
             />
-            <Box
-              icon="archive"
-              text="archive"
-              onPress={() =>
-                this.actionSheet.close(() => console.log('archive'))
-              }
-            />
+            <Box icon="archive" text="archive" onPress={this.handleToArchive} />
             <Box
               destructive
               last
               icon="delete-forever"
               text="delete"
-              onPress={() =>
-                this.actionSheet.close(() => console.log('delete'))
-              }
+              onPress={this.handleRemove}
             />
           </View>
         </ActionSheet>
@@ -103,9 +147,10 @@ export default connect(({ novel }) => ({ novel }))(SettingContainer)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: materialColors.whitePrimary,
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: materialColors.whitePrimary
+  },
+  flatListContainer: {
+    flex: 1
   },
   actionSheetContainer: {
     backgroundColor: materialColors.whitePrimary,

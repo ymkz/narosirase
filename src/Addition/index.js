@@ -10,7 +10,7 @@ import {
   novelObjectMapper,
   fetchNovelContents
 } from '../functions'
-import { add } from '../Novel/modules'
+import { novelAdd } from '../Novel/modules'
 import Header from './Header'
 import Searchbar from './Searchbar'
 
@@ -69,7 +69,7 @@ class AdditionContainer extends React.PureComponent {
         view,
         status: status.reading
       }
-      this.props.dispatch(add(payload))
+      this.props.dispatch(novelAdd(payload))
       this.props.navigation.goBack()
     }
   }

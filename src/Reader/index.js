@@ -11,7 +11,7 @@ import {
   isLastEpisode,
   fetchNovelContents
 } from '../functions'
-import { patch } from '../Novel/modules'
+import { novelPatch } from '../Novel/modules'
 import Header from './Header'
 import Promoter from './Promoter'
 import Title from './Title'
@@ -41,7 +41,7 @@ class ReaderContainer extends React.PureComponent {
       index,
       view
     }
-    this.props.dispatch(patch(payload))
+    this.props.dispatch(novelPatch(payload))
     this.setState({
       loading: false
     })
@@ -163,11 +163,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   indexContents: {
-    backgroundColor: iOSColors.white,
+    backgroundColor: materialColors.whitePrimary,
     paddingBottom: 64
   },
   novelContents: {
-    backgroundColor: iOSColors.white,
-    padding: 16
+    backgroundColor: materialColors.whitePrimary,
+    paddingBottom: 64,
+    paddingHorizontal: 16
   }
 })

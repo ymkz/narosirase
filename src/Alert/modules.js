@@ -1,8 +1,8 @@
 import { createAction, createReducer } from 'redux-act'
 
-export const show = createAction('alert/show')
-export const patch = createAction('alert/patch')
-export const hide = createAction('alert/hide')
+export const alertShow = createAction('alert/show')
+export const alertPatch = createAction('alert/patch')
+export const alertHide = createAction('alert/hide')
 
 const initialState = {
   visible: false,
@@ -11,9 +11,13 @@ const initialState = {
 
 export default createReducer(
   {
-    [show]: state => ({ ...state, visible: true }),
-    [patch]: (state, payload) => ({ ...state, message: payload }),
-    [hide]: state => ({ ...state, visible: false })
+    [alertShow]: (state, payload) => ({
+      ...state,
+      visible: true,
+      message: payload
+    }),
+    [alertPatch]: (state, payload) => ({ ...state, message: payload }),
+    [alertHide]: state => ({ ...state, visible: false })
   },
   initialState
 )

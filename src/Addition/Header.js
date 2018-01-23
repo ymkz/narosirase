@@ -40,7 +40,7 @@ export default AdditionHeaderComponent
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: iOSColors.white,
+    backgroundColor: materialColors.whitePrimary,
     height: constraints.headerHeight,
     justifyContent: 'flex-end',
     paddingTop: constraints.statusBarHeight

@@ -49,4 +49,5 @@ export const status = {
   archive: 'archive'
 }
 
-export const delay = 200
+export const patchDelay = 200
+export const alertDelay = 1000
