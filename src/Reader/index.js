@@ -12,7 +12,7 @@ import moment from 'moment'
 import { canMovePrev, canMoveNext, fetchNovelContents } from '../functions'
 import { patch } from '../Novel/modules'
 import Header from './Header'
-import Separator from './Separator'
+import Comment from './Comment'
 import Title from './Title'
 import Chapter from './Chapter'
 import Episode from './Episode'
@@ -126,17 +126,11 @@ class ReaderContainer extends React.PureComponent {
                 {this.props.novel.view.subtitle}
               </Text>
             </View>
-            <Text style={[human.subhead, styles.text]}>
-              {this.props.novel.view.prologue}
-            </Text>
-            <Separator text="まえがき" />
+            <Comment comment={this.props.novel.view.prologue} prologue />
             <Text style={[human.subhead, styles.text]}>
               {this.props.novel.view.body}
             </Text>
-            <Separator text="あとがき" />
-            <Text style={[human.subhead, styles.text]}>
-              {this.props.novel.view.epilogue}
-            </Text>
+            <Comment comment={this.props.novel.view.epilogue} />
           </ScrollView>
         )}
       </View>
@@ -185,7 +179,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: materialColors.blackPrimary,
-    lineHeight: 24
+    lineHeight: 20
   },
   chapters: {
     paddingLeft: 16

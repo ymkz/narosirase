@@ -13,6 +13,11 @@ const SettingContainer = ({ navigation, dispatch }) => (
       <Text>default expand prologue and epilogue</Text>
       <Text>default novel backgroundColor</Text>
       <Text>default novel font size</Text>
+      <Text>
+        Additionのジェスチャーはスタート位置の判定と距離で判定いれるべき
+      </Text>
+      <Text>次へと前への設置</Text>
+      <Text>設定redux</Text>
     </ScrollView>
   </View>
 )
