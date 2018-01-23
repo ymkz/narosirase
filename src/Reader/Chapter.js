@@ -15,7 +15,7 @@ export default ChapterComponent
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: iOSColors.gray,
+    borderBottomColor: iOSColors.midGray,
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 8,
     paddingBottom: 8,

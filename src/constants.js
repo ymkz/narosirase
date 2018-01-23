@@ -10,7 +10,8 @@ export const constraints = {
   searchHeight: 36,
   separatorHeight: 48,
   separatorpadding: 24,
-  scrollOffset: 128
+  scrollOffset: 96,
+  promoterOffset: 64
 }
 
 export const option = {

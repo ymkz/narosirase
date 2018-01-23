@@ -16,7 +16,6 @@ const SettingContainer = ({ navigation, dispatch }) => (
       <Text>
         Additionのジェスチャーはスタート位置の判定と距離で判定いれるべき
       </Text>
-      <Text>次へと前への設置</Text>
       <Text>設定redux</Text>
     </ScrollView>
   </View>

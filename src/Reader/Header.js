@@ -4,7 +4,7 @@ import { human, iOSColors, materialColors } from 'react-native-typography'
 import { Entypo } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
-const AdditionHeaderComponent = ({ navigation, index, all }) => (
+const AdditionHeaderComponent = ({ navigation, index, episodes }) => (
   <View style={styles.container}>
     <TouchableOpacity onPress={() => navigation.goBack()}>
       <View style={styles.back}>
@@ -18,7 +18,7 @@ const AdditionHeaderComponent = ({ navigation, index, all }) => (
     </TouchableOpacity>
     <View>
       <Text style={[human.caption1, styles.episode]}>
-        {index} / {all}
+        {index} / {episodes}
       </Text>
     </View>
   </View>

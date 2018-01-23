@@ -14,7 +14,7 @@ export default EpisodeComponent
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: iOSColors.gray,
+    borderBottomColor: iOSColors.midGray,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   inner: {

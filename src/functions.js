@@ -21,6 +21,9 @@ export const canMovePrev = ({ contentOffset }) => {
   return contentOffset.y < -constraints.scrollOffset
 }
 
+export const isNovelIndex = ({ index }) => index === 0
+export const isLastEpisode = ({ index, episodes }) => index === episodes
+
 export const novelObjectMapper = novel => ({
   ncode: novel.ncode.toLowerCase(),
   title: novel.title,
@@ -110,3 +113,5 @@ export const fetchNovelContents = async url => {
     return { subtitle, prologue, body, epilogue }
   }
 }
+
+// const images = $('img').map((i, e) => $(e).attr('src')).get().filter((v, i) => i > 1).map(v => `http://${v}`)

@@ -1,21 +1,25 @@
 import React from 'react'
 import { AppLoading } from 'expo'
-import { StyleSheet, View, ScrollView, Text } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { iOSColors, materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { canMovePrev, canMoveNext, fetchNovelContents } from '../functions'
+import { constraints } from '../constants'
+import {
+  canMovePrev,
+  canMoveNext,
+  isNovelIndex,
+  isLastEpisode,
+  fetchNovelContents
+} from '../functions'
 import { patch } from '../Novel/modules'
 import Header from './Header'
-import Comment from './Comment'
+import Promoter from './Promoter'
 import Title from './Title'
-import Chapter from './Chapter'
-import Episode from './Episode'
+import Outline from './Outline'
+import Indexes from './Indexes'
+import Subtitle from './Subtitle'
+import Comment from './Comment'
+import Body from './Body'
 
 class ReaderContainer extends React.PureComponent {
   constructor() {
@@ -71,67 +75,72 @@ class ReaderContainer extends React.PureComponent {
         <Header
           navigation={this.props.navigation}
           index={this.props.novel.index}
-          all={this.props.novel.episodes}
+          episodes={this.props.novel.episodes}
         />
         {this.state.loading ? (
           <AppLoading />
         ) : this.props.novel.index === 0 ? (
-          <ScrollView
-            scrollEventThrottle={16}
-            onScroll={this.handleScroll}
-            onResponderRelease={this.handleResponderRelease}
-            contentContainerStyle={styles.contentsContainer}
-          >
-            <Title
-              title={this.props.novel.title}
-              writer={this.props.novel.writer}
-            />
-            <View style={styles.indexContainer}>
-              <Text
-                style={[human.footnote, systemWeights.semibold, styles.index]}
-              >
-                目次
-              </Text>
-              <Text style={[human.caption1, systemWeights.thin, styles.info]}>
-                {this.props.novel.episodes}話{' '}
-                {moment(this.props.novel.lastPostedAt).format('YYYY/M/D')} 公開,
-                {moment(this.props.novel.lastUpdatedAt).format('YYYY/M/D')} 更新
-              </Text>
-            </View>
-            <View style={styles.chapters}>
-              {this.props.novel.view.chapters.map(chapter => (
-                <View key={chapter.chapter}>
-                  <Chapter chapter={chapter.chapter} />
-                  {chapter.episodes.map(episode => (
-                    <Episode
-                      key={episode.index}
-                      subtitle={episode.subtitle}
-                      handlePress={() => this.promoteReading(episode.index)}
-                    />
-                  ))}
-                </View>
-              ))}
-            </View>
-          </ScrollView>
+          <View style={styles.wrapper}>
+            <ScrollView
+              scrollEventThrottle={16}
+              onScroll={this.handleScroll}
+              onResponderRelease={this.handleResponderRelease}
+            >
+              <View style={styles.indexContents}>
+                <Title
+                  title={this.props.novel.title}
+                  writer={this.props.novel.writer}
+                />
+                <Outline novel={this.props.novel} />
+                <Indexes
+                  novel={this.props.novel}
+                  promoteReading={this.promoteReading}
+                />
+              </View>
+              <Promoter
+                text="次へ"
+                canMove={this.state.canMoveNext || this.state.canMovePrev}
+                handleMove={() =>
+                  this.promoteReading(this.props.novel.index + 1)
+                }
+                next
+              />
+            </ScrollView>
+          </View>
         ) : (
-          <ScrollView
-            scrollEventThrottle={16}
-            onScroll={this.handleScroll}
-            onResponderRelease={this.handleResponderRelease}
-            contentContainerStyle={styles.contentsContainer}
-            style={styles.contents}
-          >
-            <View style={styles.subtitleContainer}>
-              <Text style={[human.title3, styles.subtitle]}>
-                {this.props.novel.view.subtitle}
-              </Text>
-            </View>
-            <Comment comment={this.props.novel.view.prologue} prologue />
-            <Text style={[human.subhead, styles.text]}>
-              {this.props.novel.view.body}
-            </Text>
-            <Comment comment={this.props.novel.view.epilogue} />
-          </ScrollView>
+          <View style={styles.wrapper}>
+            <ScrollView
+              contentOffset={{
+                y: isNovelIndex(this.props.novel)
+                  ? 0
+                  : constraints.promoterOffset
+              }}
+              scrollEventThrottle={16}
+              onScroll={this.handleScroll}
+              onResponderRelease={this.handleResponderRelease}
+            >
+              <Promoter
+                text="前へ"
+                canMove={this.state.canMovePrev || this.state.canMoveNext}
+                prev
+              />
+              <View style={styles.novelContents}>
+                <Subtitle subtitle={this.props.novel.view.subtitle} />
+                <Comment comment={this.props.novel.view.prologue} prologue />
+                <Body body={this.props.novel.view.body} />
+                <Comment comment={this.props.novel.view.epilogue} />
+              </View>
+              <Promoter
+                text="次へ"
+                last={isLastEpisode(this.props.novel)}
+                canMove={this.state.canMovePrev || this.state.canMoveNext}
+                handleMove={() =>
+                  this.promoteReading(this.props.novel.index + 1)
+                }
+                next
+              />
+            </ScrollView>
+          </View>
         )}
       </View>
     )
@@ -145,45 +154,20 @@ export default connect(
 )(ReaderContainer)
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: iOSColors.customGray,
+    flex: 1
+  },
   container: {
     backgroundColor: materialColors.whitePrimary,
     flex: 1
   },
-  contents: {
-    paddingHorizontal: 16
-  },
-  contentsContainer: {
-    paddingVertical: 64
-  },
-  indexContainer: {
-    alignItems: 'center',
-    borderBottomColor: iOSColors.gray,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingBottom: 8
-  },
-  index: {
-    color: materialColors.blackPrimary
-  },
-  info: {
-    color: iOSColors.gray
-  },
-  subtitleContainer: {
-    alignItems: 'center',
+  indexContents: {
+    backgroundColor: iOSColors.white,
     paddingBottom: 64
   },
-  subtitle: {
-    color: materialColors.blackPrimary
-  },
-  text: {
-    color: materialColors.blackPrimary,
-    lineHeight: 20
-  },
-  chapters: {
-    paddingLeft: 16
+  novelContents: {
+    backgroundColor: iOSColors.white,
+    padding: 16
   }
 })
-
-// const images = $('img').map((i, e) => $(e).attr('src')).get().filter((v, i) => i > 1).map(v => `http://${v}`)
