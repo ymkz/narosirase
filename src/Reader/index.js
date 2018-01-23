@@ -22,8 +22,8 @@ import Comment from './Comment'
 import Body from './Body'
 
 class ReaderContainer extends React.PureComponent {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       canMovePrev: false,
       canMoveNext: false,
@@ -48,12 +48,9 @@ class ReaderContainer extends React.PureComponent {
   }
 
   handleScroll = async ({ nativeEvent }) => {
-    if (canMovePrev(nativeEvent) && this.props.novel.index !== 0) {
+    if (canMovePrev(nativeEvent) && !isNovelIndex(this.props.novel)) {
       this.setState({ canMovePrev: true })
-    } else if (
-      canMoveNext(nativeEvent) &&
-      this.props.novel.index !== this.props.novel.episodes
-    ) {
+    } else if (canMoveNext(nativeEvent) && !isLastEpisode(this.props.novel)) {
       this.setState({ canMoveNext: true })
     } else {
       this.setState({ canMovePrev: false, canMoveNext: false })

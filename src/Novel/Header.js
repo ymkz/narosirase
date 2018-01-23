@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { human, systemWeights, materialColors } from 'react-native-typography'
 import { Constants } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -9,18 +9,16 @@ const NovelHeaderComponent = ({ navigation }) => (
   <View style={styles.container}>
     <View style={styles.content}>
       <View style={styles.titles}>
-        <TouchableOpacity>
-          <Text
-            style={[
-              human.largeTitle,
-              systemWeights.bold,
-              styles.title,
-              styles.primary
-            ]}
-          >
-            Reading
-          </Text>
-        </TouchableOpacity>
+        <Text
+          style={[
+            human.largeTitle,
+            systemWeights.bold,
+            styles.title,
+            styles.primary
+          ]}
+        >
+          Reading
+        </Text>
       </View>
       <View style={styles.icons}>
         <MaterialIcons

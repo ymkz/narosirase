@@ -1,5 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, RefreshControl } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  RefreshControl,
+  StatusBar
+} from 'react-native'
 import { materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import { connect } from 'react-redux'
@@ -19,7 +25,7 @@ import Separator from './Separator'
 import Item from './Item'
 import Box from './Box'
 
-class SettingContainer extends React.PureComponent {
+class NovelContainer extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,6 +36,7 @@ class SettingContainer extends React.PureComponent {
 
   handleRefresh = async () => {
     this.setState({ refreshing: true })
+    StatusBar.setBarStyle('light-content', true)
     this.props.dispatch(alertShow('更新を開始しました'))
     for (let i = 0; i < this.props.novel.length; i++) {
       await sleep(patchDelay)
@@ -52,6 +59,7 @@ class SettingContainer extends React.PureComponent {
     this.props.dispatch(alertPatch('更新が完了しました'))
     await sleep(alertDelay)
     this.props.dispatch(alertHide())
+    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleActionSheet = novel => {
@@ -142,7 +150,7 @@ class SettingContainer extends React.PureComponent {
   }
 }
 
-export default connect(({ novel }) => ({ novel }))(SettingContainer)
+export default connect(({ novel }) => ({ novel }))(NovelContainer)
 
 const styles = StyleSheet.create({
   container: {
