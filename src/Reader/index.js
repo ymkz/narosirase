@@ -95,7 +95,7 @@ class ReaderContainer extends React.PureComponent {
                 />
               </View>
               <Promoter
-                text="次へ"
+                text="読み始める"
                 canMove={this.state.canMoveNext || this.state.canMovePrev}
                 handleMove={() =>
                   this.promoteReading(this.props.novel.index + 1)
@@ -117,7 +117,7 @@ class ReaderContainer extends React.PureComponent {
               onResponderRelease={this.handleResponderRelease}
             >
               <Promoter
-                text="前へ"
+                text="前のエピソード"
                 canMove={this.state.canMovePrev || this.state.canMoveNext}
                 prev
               />
@@ -128,7 +128,7 @@ class ReaderContainer extends React.PureComponent {
                 <Comment comment={this.props.novel.view.epilogue} />
               </View>
               <Promoter
-                text="次へ"
+                text="次のエピソード"
                 last={isLastEpisode(this.props.novel)}
                 canMove={this.state.canMovePrev || this.state.canMoveNext}
                 handleMove={() =>
