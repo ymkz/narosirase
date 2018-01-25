@@ -31,7 +31,7 @@ export const novelObjectMapper = novel => ({
   writer: novel.writer,
   short: novel.novel_type === 2,
   story: novel.story,
-  isstop: novel.isstop === 1,
+  stop: novel.isstop === 1,
   genre: genre[novel.genre],
   keywords: novel.keyword.split(' '),
   publishedAt: novel.general_firstup,

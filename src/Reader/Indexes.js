@@ -5,7 +5,7 @@ import Episode from './Episode'
 
 const IndexesComponent = ({ novel, promoteReading }) => (
   <View style={styles.container}>
-    {novel.view.chapters.map(chapter => (
+    {novel.reader.chapters.map(chapter => (
       <View key={chapter.chapter}>
         <Chapter chapter={chapter.chapter} />
         {chapter.episodes.map(episode => (

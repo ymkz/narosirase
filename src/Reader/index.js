@@ -33,13 +33,13 @@ class ReaderContainer extends React.PureComponent {
 
   promoteReading = async index => {
     this.setState({ loading: true })
-    const view = await fetchNovelContents(
+    const reader = await fetchNovelContents(
       `https://ncode.syosetu.com/${this.props.novel.ncode}/${index}`
     )
     const payload = {
       ...this.props.novel,
       index,
-      view
+      reader
     }
     this.props.dispatch(novelPatch(payload))
     this.setState({
@@ -117,15 +117,15 @@ class ReaderContainer extends React.PureComponent {
               onResponderRelease={this.handleResponderRelease}
             >
               <Promoter
-                text="前のエピソード"
+                text={this.props.novel.index <= 1 ? '目次へ' : '前のエピソード'}
                 canMove={this.state.canMovePrev || this.state.canMoveNext}
                 prev
               />
               <View style={styles.novelContents}>
-                <Subtitle subtitle={this.props.novel.view.subtitle} />
-                <Comment comment={this.props.novel.view.prologue} prologue />
-                <Body body={this.props.novel.view.body} />
-                <Comment comment={this.props.novel.view.epilogue} />
+                <Subtitle subtitle={this.props.novel.reader.subtitle} />
+                <Comment comment={this.props.novel.reader.prologue} prologue />
+                <Body body={this.props.novel.reader.body} />
+                <Comment comment={this.props.novel.reader.epilogue} />
               </View>
               <Promoter
                 text="次のエピソード"

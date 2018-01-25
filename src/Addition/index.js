@@ -60,13 +60,13 @@ class AdditionContainer extends React.PureComponent {
       const response = await fetch(url, option).catch(errorHandler)
       const json = await response.json()
       const data = novelObjectMapper(json[1])
-      const view = await fetchNovelContents(
+      const reader = await fetchNovelContents(
         `https://ncode.syosetu.com/${ncode}/${index}`
       )
       const payload = {
         ...data,
         index,
-        view,
+        reader,
         status: status.reading
       }
       this.props.dispatch(novelAdd(payload))

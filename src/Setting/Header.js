@@ -1,6 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import { human, systemWeights, materialColors } from 'react-native-typography'
+import {
+  human,
+  systemWeights,
+  iOSColors,
+  materialColors
+} from 'react-native-typography'
 import { Entypo } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
@@ -30,8 +35,11 @@ export default SettingHeaderComponent
 const styles = StyleSheet.create({
   container: {
     backgroundColor: materialColors.whitePrimary,
+    borderBottomColor: iOSColors.midGray,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     height: constraints.headerHeight,
     justifyContent: 'flex-end',
+    paddingBottom: 4,
     paddingTop: constraints.statusBarHeight
   },
   actions: {

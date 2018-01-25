@@ -1,15 +1,28 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, Button } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { iOSColors } from 'react-native-typography'
 import { connect } from 'react-redux'
-import { novelPurge } from '../Novel/modules'
 import Header from './Header'
+import Developer from './Developer'
+import About from './About'
+import Disclaimer from './Disclaimer'
+import Import from './Import'
+import Export from './Export'
+import Purge from './Purge'
 
 const SettingContainer = ({ navigation, dispatch }) => (
   <View style={styles.container}>
     <Header navigation={navigation} />
-    <ScrollView style={styles.scroll}>
-      <Button title="novelPurge" onPress={() => dispatch(novelPurge())} />
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContainer}
+    >
+      <Developer />
+      <About />
+      <Disclaimer />
+      <Export />
+      <Import dispatch={dispatch} />
+      <Purge dispatch={dispatch} />
     </ScrollView>
   </View>
 )
@@ -23,7 +36,9 @@ const styles = StyleSheet.create({
   },
   scroll: {
     backgroundColor: iOSColors.customGray,
-    flex: 1,
-    paddingHorizontal: 8
+    flex: 1
+  },
+  scrollContainer: {
+    paddingVertical: 16
   }
 })
