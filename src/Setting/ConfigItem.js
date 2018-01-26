@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableHighlight } from 'react-native'
 import { iOSColors, materialColors } from 'react-native-typography'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const ConfigItemComponent = ({ size, name, handler }) => (
+const ConfigItemComponent = ({ size, name, current, handler }) => (
   <TouchableHighlight
     underlayColor={iOSColors.customGray}
     onPress={handler}
@@ -16,6 +16,11 @@ const ConfigItemComponent = ({ size, name, handler }) => (
         color={materialColors.blackPrimary}
       />
       <Text style={styles.point}>{size} pt</Text>
+      {current && (
+        <View style={styles.current}>
+          <MaterialIcons name="label" size={20} color={iOSColors.blue} />
+        </View>
+      )}
     </View>
   </TouchableHighlight>
 )
@@ -35,5 +40,9 @@ const styles = StyleSheet.create({
   point: {
     color: materialColors.blackPrimary,
     paddingLeft: 16
+  },
+  current: {
+    alignItems: 'flex-end',
+    flex: 1
   }
 })

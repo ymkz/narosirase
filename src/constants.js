@@ -49,5 +49,8 @@ export const status = {
   archive: 'archive'
 }
 
+export const fontSizeRange = [12, 13, 14, 15, 16]
+export const lineHeightRange = [18, 19, 20, 21, 22]
+
 export const patchDelay = 200
 export const alertDelay = 1000

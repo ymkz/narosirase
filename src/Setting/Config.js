@@ -8,6 +8,7 @@ import {
 import { ActionSheet } from 'react-native-cell-components'
 import Switch from 'react-native-switch-pro'
 import { Entypo } from '@expo/vector-icons'
+import { fontSizeRange, lineHeightRange } from '../constants'
 import {
   changeFontSize,
   changeLineHeight,
@@ -77,21 +78,23 @@ class ConfigComponent extends React.PureComponent {
           </View>
         </View>
         <ActionSheet ref={ref => (this.fontSizeActionSheet = ref)}>
-          {[14, 15, 16, 17, 18].map(size => (
+          {fontSizeRange.map(size => (
             <ConfigItem
               key={`font-size-config-row-${size}`}
               size={size}
               name="format-size"
+              current={this.props.setting.fontSize === size}
               handler={() => this.handleFontSizeChange(size)}
             />
           ))}
         </ActionSheet>
         <ActionSheet ref={ref => (this.lineHeightActionSheet = ref)}>
-          {[18, 19, 20, 21, 22].map(size => (
+          {lineHeightRange.map(size => (
             <ConfigItem
               key={`line-height-config-row-${size}`}
               size={size}
               name="format-line-spacing"
+              current={this.props.setting.lineHeight === size}
               handler={() => this.handlelineHeightChange(size)}
             />
           ))}
