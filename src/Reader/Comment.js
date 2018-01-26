@@ -4,8 +4,11 @@ import { iOSColors } from 'react-native-typography'
 import { Octicons } from '@expo/vector-icons'
 
 class CommentComponent extends React.PureComponent {
-  state = {
-    open: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: props.setting.expandComment
+    }
   }
 
   render() {

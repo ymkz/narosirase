@@ -5645,6 +5645,12 @@ react-native-swipe-gestures@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.2.tgz#914e1a72a94bc55b322b4622a01103ab879296dd"
 
+react-native-switch-pro@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/react-native-switch-pro/-/react-native-switch-pro-0.4.7.tgz#a82f2db206df2893ccd7aef0a8bc7bceaee25895"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-tab-view@^0.0.74:
   version "0.0.74"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.74.tgz#62c0c882d9232b461ce181d440d683b4f99d1bd8"

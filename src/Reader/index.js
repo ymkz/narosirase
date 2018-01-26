@@ -123,9 +123,19 @@ class ReaderContainer extends React.PureComponent {
               />
               <View style={styles.novelContents}>
                 <Subtitle subtitle={this.props.novel.reader.subtitle} />
-                <Comment comment={this.props.novel.reader.prologue} prologue />
-                <Body body={this.props.novel.reader.body} />
-                <Comment comment={this.props.novel.reader.epilogue} />
+                <Comment
+                  comment={this.props.novel.reader.prologue}
+                  setting={this.props.setting}
+                  prologue
+                />
+                <Body
+                  body={this.props.novel.reader.body}
+                  setting={this.props.setting}
+                />
+                <Comment
+                  comment={this.props.novel.reader.epilogue}
+                  setting={this.props.setting}
+                />
               </View>
               <Promoter
                 text="次のエピソード"
@@ -145,8 +155,12 @@ class ReaderContainer extends React.PureComponent {
 }
 
 export default connect(
-  ({ novel }, { navigation: { state: { params: { novel: { ncode } } } } }) => ({
-    novel: novel.filter(item => item.ncode === ncode)[0]
+  (
+    { novel, setting },
+    { navigation: { state: { params: { novel: { ncode } } } } }
+  ) => ({
+    novel: novel.filter(item => item.ncode === ncode)[0],
+    setting
   })
 )(ReaderContainer)
 

@@ -10,11 +10,6 @@
 
 ## Task
 
-* 設定画面構築
-  * expandComment
-  * fontSize
-  * lineHeight
-* setting の state の Reader 画面渡し
 * Reader 画面での Index へのジャンプ
 * Reader 画面での設定変更 Modal
 * Addition 画面での戻る進むジェスチャーのスタート位置の判定場所と距離

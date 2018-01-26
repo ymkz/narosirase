@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native'
 import { iOSColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import Header from './Header'
+import Config from './Config'
 import Developer from './Developer'
 import About from './About'
 import Disclaimer from './Disclaimer'
@@ -10,13 +11,14 @@ import Import from './Import'
 import Export from './Export'
 import Purge from './Purge'
 
-const SettingContainer = ({ navigation, dispatch }) => (
+const SettingContainer = ({ setting, navigation, dispatch }) => (
   <View style={styles.container}>
     <Header navigation={navigation} />
     <ScrollView
       style={styles.scroll}
       contentContainerStyle={styles.scrollContainer}
     >
+      <Config dispatch={dispatch} setting={setting} />
       <Developer />
       <About />
       <Disclaimer />
@@ -27,7 +29,7 @@ const SettingContainer = ({ navigation, dispatch }) => (
   </View>
 )
 
-export default connect()(SettingContainer)
+export default connect(({ setting }) => ({ setting }))(SettingContainer)
 
 const styles = StyleSheet.create({
   container: {
