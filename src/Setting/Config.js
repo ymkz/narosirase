@@ -1,10 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import {
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { iOSColors, materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import Switch from 'react-native-switch-pro'
 import { Entypo } from '@expo/vector-icons'
@@ -34,38 +30,42 @@ class ConfigComponent extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.fontSizeActionSheet.open()}>
-          <View style={styles.item}>
-            <Text style={styles.description}>本文のフォントサイズ</Text>
-            <View style={styles.information}>
-              <Text style={[systemWeights.semibold, styles.text]}>
-                {this.props.setting.fontSize} pt
-              </Text>
-              <Entypo
-                name="chevron-thin-right"
-                size={16}
-                color={materialColors.blackTertiary}
-                style={styles.icon}
-              />
+        <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => this.fontSizeActionSheet.open()}>
+            <View style={styles.item}>
+              <Text style={styles.description}>本文のフォントサイズ</Text>
+              <View style={styles.information}>
+                <Text style={styles.text}>
+                  {this.props.setting.fontSize} pt
+                </Text>
+                <Entypo
+                  name="chevron-thin-right"
+                  size={16}
+                  color={materialColors.blackTertiary}
+                  style={styles.icon}
+                />
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.lineHeightActionSheet.open()}>
-          <View style={styles.item}>
-            <Text style={styles.description}>本文の行間の高さ</Text>
-            <View style={styles.information}>
-              <Text style={[systemWeights.semibold, styles.text]}>
-                {this.props.setting.lineHeight} pt
-              </Text>
-              <Entypo
-                name="chevron-thin-right"
-                size={16}
-                color={materialColors.blackTertiary}
-                style={styles.icon}
-              />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => this.lineHeightActionSheet.open()}>
+            <View style={styles.item}>
+              <Text style={styles.description}>本文の行間の高さ</Text>
+              <View style={styles.information}>
+                <Text style={styles.text}>
+                  {this.props.setting.lineHeight} pt
+                </Text>
+                <Entypo
+                  name="chevron-thin-right"
+                  size={16}
+                  color={materialColors.blackTertiary}
+                  style={styles.icon}
+                />
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
         <View style={styles.lastItem}>
           <Text style={styles.description}>
             「まえがき」と「あとがき」を展開する
@@ -115,11 +115,13 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     marginVertical: 8
   },
+  itemContainer: {
+    borderBottomColor: iOSColors.midGray,
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
   item: {
     alignItems: 'center',
     backgroundColor: iOSColors.white,
-    borderBottomColor: iOSColors.midGray,
-    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     padding: 16
   },

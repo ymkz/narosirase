@@ -13,7 +13,8 @@
 * Reader 画面での Index へのジャンプ
 * Reader 画面での設定変更 Modal
 * Addition 画面での戻る進むジェスチャーのスタート位置の判定場所と距離
-* 小説の追加の排他制御
+* 小説の追加の排他制御(連続タップの throttling)
+* navigation の排他制御
 * 挿絵表示 Component
 * 短編のときの Reader 制御
 * スクロール位置保存
