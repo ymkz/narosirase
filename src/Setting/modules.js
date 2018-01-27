@@ -5,7 +5,7 @@ export const changeLineHeight = createAction('setting/change_line_height')
 export const changeExpandComment = createAction('setting/change_expand_comment')
 
 const initialState = {
-  fontSize: 15,
+  fontSize: 14,
   lineHeight: 20,
   expandComment: true
 }

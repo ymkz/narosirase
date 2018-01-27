@@ -6,7 +6,6 @@ import {
   iOSColors,
   materialColors
 } from 'react-native-typography'
-import { Constants } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: constraints.headerHeight,
     justifyContent: 'flex-end',
-    paddingTop: Constants.statusBarHeight
+    paddingTop: constraints.statusBarHeight
   },
   content: {
     flexDirection: 'row',
