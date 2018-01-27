@@ -1,24 +1,63 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { human, systemWeights, materialColors } from 'react-native-typography'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  human,
+  systemWeights,
+  iOSColors,
+  materialColors
+} from 'react-native-typography'
 import { Constants } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
-const NovelHeaderComponent = ({ navigation }) => (
+const NovelHeaderComponent = ({
+  handleIndexChange,
+  navigation,
+  index,
+  routes
+}) => (
   <View style={styles.container}>
     <View style={styles.content}>
       <View style={styles.titles}>
-        <Text
-          style={[
-            human.largeTitle,
-            systemWeights.bold,
-            styles.title,
-            styles.primary
-          ]}
-        >
-          Reading
-        </Text>
+        <TouchableOpacity>
+          <Text
+            style={[
+              human.largeTitle,
+              systemWeights.bold,
+              styles.title,
+              styles.primary
+            ]}
+          >
+            {routes[index].title}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.subs}>
+          <TouchableOpacity
+            onPress={() =>
+              handleIndexChange(routes[index > 1 ? 0 : index + 1].index)
+            }
+          >
+            <Text
+              style={[
+                human.caption2,
+                systemWeights.thin,
+                styles.title,
+                styles.second
+              ]}
+            >
+              {routes[index > 1 ? 0 : index + 1].title}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              handleIndexChange(routes[index < 1 ? index + 2 : index - 1].index)
+            }
+          >
+            <Text style={[human.caption2, systemWeights.thin, styles.second]}>
+              {routes[index < 1 ? index + 2 : index - 1].title}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.icons}>
         <MaterialIcons
@@ -43,17 +82,19 @@ export default NovelHeaderComponent
 const styles = StyleSheet.create({
   container: {
     backgroundColor: materialColors.whitePrimary,
+    borderBottomColor: iOSColors.midGray,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     height: constraints.headerHeight,
     justifyContent: 'flex-end',
     paddingTop: Constants.statusBarHeight
   },
   content: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingBottom: 4,
     paddingHorizontal: 8
   },
   titles: {
+    flex: 1,
     flexDirection: 'row'
   },
   title: {
@@ -61,6 +102,13 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: materialColors.blackPrimary
+  },
+  second: {
+    color: materialColors.blackPrimary
+  },
+  subs: {
+    flexDirection: 'row',
+    paddingTop: 22
   },
   icons: {
     flexDirection: 'row'

@@ -1,65 +1,31 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  RefreshControl,
-  StatusBar
-} from 'react-native'
+import { StyleSheet, View, StatusBar } from 'react-native'
+import { TabViewAnimated } from 'react-native-tab-view'
 import { materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import { connect } from 'react-redux'
-import {
-  constraints,
-  status,
-  option,
-  patchDelay,
-  alertDelay
-} from '../constants'
-import { sleep, novelObjectMapper } from '../functions'
-import { alertShow, alertPatch, alertHide } from '../Alert/modules'
+import { constraints, status, alertDelay } from '../constants'
+import { sleep } from '../functions'
+import { alertShow, alertHide } from '../Alert/modules'
 import { novelPatch, novelRemove } from './modules'
 import Header from './Header'
-import Empty from './Empty'
-import Separator from './Separator'
-import Item from './Item'
+import Novels from './Novels'
 import Box from './Box'
 
 class NovelContainer extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      refreshing: false,
-      novel: null
-    }
-  }
-
-  handleRefresh = async () => {
-    this.setState({ refreshing: true })
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('更新を開始しました'))
-    for (let i = 0; i < this.props.novel.length; i++) {
-      await sleep(patchDelay)
-      this.props.dispatch(alertPatch(`${i + 1} / ${this.props.novel.length}`))
-      const url = `http://api.syosetu.com/novelapi/api?ncode=${
-        this.props.novel[i].ncode
-      }&out=json`
-      const response = await fetch(url, option).catch(() =>
-        this.setState({ refreshing: false })
-      )
-      const json = await response.json()
-      const data = novelObjectMapper(json[1])
-      const payload = {
-        ...this.props.novel[i],
-        ...data
+      novel: null,
+      tabview: {
+        index: 0,
+        routes: [
+          { key: 'reading', title: 'Reading', index: 0 },
+          { key: 'pending', title: 'Pending', index: 1 },
+          { key: 'archive', title: 'Archive', index: 2 }
+        ]
       }
-      this.props.dispatch(novelPatch(payload))
     }
-    this.setState({ refreshing: false })
-    this.props.dispatch(alertPatch('更新が完了しました'))
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleActionSheet = novel => {
@@ -113,38 +79,43 @@ class NovelContainer extends React.PureComponent {
     StatusBar.setBarStyle('dark-content', true)
   }
 
+  handleIndexChange = index => {
+    this.setState({ tabview: { ...this.state.tabview, index } })
+  }
+
+  renderHeader = ({ navigationState }) => (
+    <Header
+      navigation={this.props.navigation}
+      handleIndexChange={this.handleIndexChange}
+      {...navigationState}
+    />
+  )
+
+  renderScene = ({ route }) => (
+    <Novels
+      route={route}
+      navigation={this.props.navigation}
+      handleActionSheet={this.handleActionSheet}
+    />
+  )
+
   render() {
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
-        <FlatList
-          data={this.props.novel}
-          ItemSeparatorComponent={Separator}
-          keyExtractor={({ ncode }) => ncode}
-          ListEmptyComponent={Empty}
-          refreshing={this.state.refreshing}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.handleRefresh}
-            />
-          }
-          renderItem={({ item }) => (
-            <Item
-              novel={item}
-              navigation={this.props.navigation}
-              handleActionSheet={this.handleActionSheet}
-              dispatch={this.props.dispatch}
-            />
-          )}
-          style={styles.flatListContainer}
+        <TabViewAnimated
+          style={styles.tabview}
+          navigationState={this.state.tabview}
+          onIndexChange={this.handleIndexChange}
+          renderHeader={this.renderHeader}
+          renderScene={this.renderScene}
+          useNativeDriver
         />
         <ActionSheet
           ref={ref => (this.actionSheet = ref)}
           mode="list"
           onClose={() => this.setState({ novel: null })}
         >
-          <View style={styles.actionSheetContainer}>
+          <View style={styles.actionsheet}>
             <Box
               icon="chrome-reader-mode"
               text="reading"
@@ -177,10 +148,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: materialColors.whitePrimary
   },
-  flatListContainer: {
+  tabview: {
     flex: 1
   },
-  actionSheetContainer: {
+  actionsheet: {
     backgroundColor: materialColors.whitePrimary,
     flexDirection: 'row',
     padding: constraints.deviceWidth / 25
