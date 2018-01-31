@@ -42,13 +42,31 @@ export const novelObjectMapper = novel => ({
   episodes: novel.general_all_no
 })
 
-export const fetchNovelContents = async url => {
+export const novelLocation = novel => {
+  if (novel.short) {
+    return '短編'
+  } else if (novel.index === 0) {
+    return '目次'
+  } else {
+    return `${novel.index} / ${novel.episodes}`
+  }
+}
+
+export const fetchNovelContents = async (url, short = false) => {
   const parsed = parse(url)
   const pathnames = parsed.path.split('/')
   const ncode = pathnames[1]
   const novel = `${parsed.scheme}://${parsed.host}/${ncode}`
   const index = Number(pathnames[2]) || 0
-  if (index === 0) {
+  if (short) {
+    const response = await fetch(novel).catch(errorHandler)
+    const html = await response.text()
+    const $ = cheerio.load(html)
+    const prologue = $('#novel_p').text()
+    const body = $('#novel_honbun').text()
+    const epilogue = $('#novel_a').text()
+    return { prologue, body, epilogue }
+  } else if (index === 0) {
     const response = await fetch(novel).catch(errorHandler)
     const html = await response.text()
     const $ = cheerio.load(html)
