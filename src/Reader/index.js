@@ -82,16 +82,16 @@ class ReaderContainer extends React.PureComponent {
                   writer={this.props.novel.writer}
                 />
                 <Comment
-                  comment={this.props.novel.reader.prologue}
+                  comment={this.props.novel.reader.foreword}
                   setting={this.props.setting}
-                  prologue
+                  foreword
                 />
                 <Body
                   body={this.props.novel.reader.body}
                   setting={this.props.setting}
                 />
                 <Comment
-                  comment={this.props.novel.reader.epilogue}
+                  comment={this.props.novel.reader.afterword}
                   setting={this.props.setting}
                 />
               </View>
@@ -154,16 +154,16 @@ class ReaderContainer extends React.PureComponent {
               <View style={styles.novelContents}>
                 <Subtitle subtitle={this.props.novel.reader.subtitle} />
                 <Comment
-                  comment={this.props.novel.reader.prologue}
+                  comment={this.props.novel.reader.foreword}
                   setting={this.props.setting}
-                  prologue
+                  foreword
                 />
                 <Body
                   body={this.props.novel.reader.body}
                   setting={this.props.setting}
                 />
                 <Comment
-                  comment={this.props.novel.reader.epilogue}
+                  comment={this.props.novel.reader.afterword}
                   setting={this.props.setting}
                 />
               </View>

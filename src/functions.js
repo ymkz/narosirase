@@ -62,10 +62,10 @@ export const fetchNovelContents = async (url, short = false) => {
     const response = await fetch(novel).catch(errorHandler)
     const html = await response.text()
     const $ = cheerio.load(html)
-    const prologue = $('#novel_p').text()
+    const foreword = $('#novel_p').text()
     const body = $('#novel_honbun').text()
-    const epilogue = $('#novel_a').text()
-    return { prologue, body, epilogue }
+    const afterword = $('#novel_a').text()
+    return { foreword, body, afterword }
   } else if (index === 0) {
     const response = await fetch(novel).catch(errorHandler)
     const html = await response.text()
@@ -125,10 +125,10 @@ export const fetchNovelContents = async (url, short = false) => {
     const subtitle = $('.novel_subtitle')
       .first()
       .text()
-    const prologue = $('#novel_p').text()
+    const foreword = $('#novel_p').text()
     const body = $('#novel_honbun').text()
-    const epilogue = $('#novel_a').text()
-    return { subtitle, prologue, body, epilogue }
+    const afterword = $('#novel_a').text()
+    return { subtitle, foreword, body, afterword }
   }
 }
 

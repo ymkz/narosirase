@@ -25,7 +25,7 @@ class CommentComponent extends React.PureComponent {
             size={16}
           />
           <Text style={styles.text}>
-            {this.props.prologue ? 'まえがき' : 'あとがき'}
+            {this.props.foreword ? 'まえがき' : 'あとがき'}
           </Text>
         </TouchableOpacity>
         {this.state.open && (
