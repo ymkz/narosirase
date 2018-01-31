@@ -127,9 +127,12 @@ export const fetchNovelContents = async (url, short = false) => {
       .text()
     const foreword = $('#novel_p').text()
     const body = $('#novel_honbun').text()
+    const images = $('img')
+      .map((i, e) => $(e).attr('src'))
+      .get()
+      .filter((imageUrl, index) => index > 1)
+      .map(imageUrl => `https:${imageUrl}`)
     const afterword = $('#novel_a').text()
-    return { subtitle, foreword, body, afterword }
+    return { subtitle, foreword, body, images, afterword }
   }
 }
-
-// const images = $('img').map((i, e) => $(e).attr('src')).get().filter((v, i) => i > 1).map(v => `http://${v}`)

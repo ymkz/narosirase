@@ -1,5 +1,4 @@
 import React from 'react'
-import { DocumentPicker, FileSystem } from 'expo'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import {
   human,
@@ -7,6 +6,7 @@ import {
   iOSColors,
   materialColors
 } from 'react-native-typography'
+import { DocumentPicker, FileSystem } from 'expo'
 import { alertDelay } from '../constants'
 import { sleep } from '../functions'
 import { novelHydrate } from '../Novel/modules'

@@ -1,8 +1,8 @@
 import React from 'react'
-import { AppLoading } from 'expo'
 import { StyleSheet, View, ScrollView, Text } from 'react-native'
 import { iOSColors, materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 import { constraints } from '../constants'
 import {
   canMovePrev,
@@ -20,6 +20,7 @@ import Outline from './Outline'
 import Indexes from './Indexes'
 import Subtitle from './Subtitle'
 import Comment from './Comment'
+import Images from './Images'
 import Body from './Body'
 
 class ReaderContainer extends React.PureComponent {
@@ -172,6 +173,9 @@ class ReaderContainer extends React.PureComponent {
                   body={this.props.novel.reader.body}
                   setting={this.props.setting}
                 />
+                {!!this.props.novel.reader.images && (
+                  <Images images={this.props.novel.reader.images} />
+                )}
                 <Comment
                   comment={this.props.novel.reader.afterword}
                   setting={this.props.setting}
