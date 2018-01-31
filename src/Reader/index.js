@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppLoading } from 'expo'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, Text } from 'react-native'
 import { iOSColors, materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import { constraints } from '../constants'
@@ -15,6 +15,7 @@ import { novelPatch } from '../Novel/modules'
 import Header from './Header'
 import Promoter from './Promoter'
 import Title from './Title'
+import Story from './Story'
 import Outline from './Outline'
 import Indexes from './Indexes'
 import Subtitle from './Subtitle'
@@ -88,6 +89,15 @@ class ReaderContainer extends React.PureComponent {
                   title={this.props.novel.title}
                   writer={this.props.novel.writer}
                 />
+                <Story novel={this.props.novel} />
+                <Text
+                  onPress={() =>
+                    this.promoteReading(this.props.novel.index + 1)
+                  }
+                  style={styles.start}
+                >
+                  読み始める
+                </Text>
                 <Outline novel={this.props.novel} />
                 <Indexes
                   novel={this.props.novel}
@@ -181,5 +191,9 @@ const styles = StyleSheet.create({
     backgroundColor: materialColors.whitePrimary,
     paddingBottom: 64,
     paddingHorizontal: 16
+  },
+  start: {
+    color: iOSColors.blue,
+    textAlign: 'center'
   }
 })
