@@ -26,14 +26,18 @@ class ReaderContainer extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      loading: false,
       canMovePrev: false,
       canMoveNext: false,
-      loading: false
+      scrollOffset: props.novel.scrollOffset
     }
   }
 
   promoteReading = async index => {
-    this.setState({ loading: true })
+    this.setState({
+      loading: true,
+      scrollOffset: index === 0 ? 0 : constraints.scrollOffset
+    })
     const reader = await fetchNovelContents(
       `https://ncode.syosetu.com/${this.props.novel.ncode}/${index}`
     )
@@ -49,6 +53,12 @@ class ReaderContainer extends React.PureComponent {
   }
 
   handleScroll = async ({ nativeEvent }) => {
+    this.props.dispatch(
+      novelPatch({
+        ...this.props.novel,
+        scrollOffset: nativeEvent.contentOffset.y
+      })
+    )
     if (canMovePrev(nativeEvent) && !isNovelIndex(this.props.novel)) {
       this.setState({ canMovePrev: true })
     } else if (canMoveNext(nativeEvent) && !isLastEpisode(this.props.novel)) {
@@ -137,10 +147,10 @@ class ReaderContainer extends React.PureComponent {
         ) : (
           <View style={styles.wrapper}>
             <ScrollView
+              ref={ref => (this.scroller = ref)}
               contentOffset={{
-                y: isNovelIndex(this.props.novel)
-                  ? 0
-                  : constraints.promoterOffset
+                x: 0,
+                y: this.state.scrollOffset
               }}
               scrollEventThrottle={16}
               onScroll={this.handleScroll}
