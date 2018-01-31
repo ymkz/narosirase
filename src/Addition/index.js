@@ -4,7 +4,7 @@ import GestureRecognizer from 'react-native-swipe-gestures'
 import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import { parse } from 'uri-js'
-import { option, status } from '../constants'
+import { constraints, option, status } from '../constants'
 import {
   errorHandler,
   novelObjectMapper,
@@ -68,6 +68,7 @@ class AdditionContainer extends React.PureComponent {
         ...data,
         index,
         reader,
+        scrollOffset: index === 0 ? 0 : constraints.promoterOffset,
         status: status.reading
       }
       this.props.dispatch(novelAdd(payload))
