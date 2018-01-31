@@ -70,13 +70,33 @@ class ReaderContainer extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          navigation={this.props.navigation}
-          index={this.props.novel.index}
-          episodes={this.props.novel.episodes}
-        />
+        <Header navigation={this.props.navigation} novel={this.props.novel} />
         {this.state.loading ? (
           <AppLoading />
+        ) : this.props.novel.short ? (
+          <View style={styles.shortWrapper}>
+            <ScrollView scrollEventThrottle={16} onScroll={this.handleScroll}>
+              <View style={styles.novelContents}>
+                <Title
+                  title={this.props.novel.title}
+                  writer={this.props.novel.writer}
+                />
+                <Comment
+                  comment={this.props.novel.reader.prologue}
+                  setting={this.props.setting}
+                  prologue
+                />
+                <Body
+                  body={this.props.novel.reader.body}
+                  setting={this.props.setting}
+                />
+                <Comment
+                  comment={this.props.novel.reader.epilogue}
+                  setting={this.props.setting}
+                />
+              </View>
+            </ScrollView>
+          </View>
         ) : isNovelIndex(this.props.novel) ? (
           <View style={styles.wrapper}>
             <ScrollView
@@ -177,6 +197,10 @@ export default connect(
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: iOSColors.customGray,
+    flex: 1
+  },
+  shortWrapper: {
+    backgroundColor: materialColors.whitePrimary,
     flex: 1
   },
   container: {

@@ -15,7 +15,11 @@ const ItemComponent = ({ novel, navigation, handleActionSheet }) => (
         <Text style={styles.title}>{novel.title}</Text>
         <Text style={styles.writer}>{novel.writer}</Text>
         <Text style={styles.info}>
-          {`${`${novel.index}話／全${novel.episodes}話`}`}
+          {novel.short
+            ? '短編'
+            : `${novel.index === 0 ? '目次' : `${novel.index}話`}／全${
+                novel.episodes
+              }話`}
           <Text style={styles.updated}>{` 更新：${moment(
             novel.lastUpdatedAt
           ).format('M月D日h時m分')}`}</Text>
@@ -41,18 +45,18 @@ const styles = StyleSheet.create({
     padding: 12
   },
   title: {
+    color: materialColors.blackPrimary,
     fontSize: 15.5,
-    fontWeight: 'bold',
-    color: materialColors.blackPrimary
+    fontWeight: 'bold'
   },
   writer: {
-    fontWeight: 'bold',
     color: materialColors.blackSecondary,
+    fontWeight: 'bold',
     paddingTop: 6
   },
   info: {
-    fontWeight: 'bold',
-    color: materialColors.blackSecondary
+    color: materialColors.blackSecondary,
+    fontWeight: 'bold'
   },
   updated: {
     color: materialColors.blackSecondary,
