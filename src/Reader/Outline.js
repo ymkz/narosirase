@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 24,
-    paddingBottom: 8
+    paddingBottom: 8,
+    paddingTop: 32
   },
   index: {
     color: materialColors.blackPrimary
