@@ -12,7 +12,7 @@
     "devtools": "react-devtools",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "prettier-eslint --write 'src/**/*.js'",
-    "lint:check": "eslint --print-config .eslintrc.yaml | eslint-config-prettier-check",
+    "lint:check": "eslint --print-config .eslintrc.yml | eslint-config-prettier-check",
     "clean": "rimraf node_modules && yarn",
     "clean:cache": "rimraf node_modules && yarn cache clean && yarn"
   },
