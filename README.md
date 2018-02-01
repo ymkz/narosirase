@@ -6,4 +6,7 @@
    <a href="https://github.com/prettier/prettier/">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
   </a>
+  <a href="https://circleci.com/gh/ymkz/narosirase">
+    <img alt="CircleCI" src="https://circleci.com/gh/ymkz/narosirase.svg?style=flat-square">
+  </a>
 </p>

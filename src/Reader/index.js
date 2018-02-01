@@ -30,8 +30,18 @@ class ReaderContainer extends React.PureComponent {
       loading: false,
       canMovePrev: false,
       canMoveNext: false,
+      position: props.novel.scrollOffset,
       scrollOffset: props.novel.scrollOffset
     }
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(
+      novelPatch({
+        ...this.props.novel,
+        scrollOffset: this.state.position
+      })
+    )
   }
 
   promoteReading = async index => {
@@ -54,12 +64,7 @@ class ReaderContainer extends React.PureComponent {
   }
 
   handleScroll = async ({ nativeEvent }) => {
-    this.props.dispatch(
-      novelPatch({
-        ...this.props.novel,
-        scrollOffset: nativeEvent.contentOffset.y
-      })
-    )
+    this.setState({ position: nativeEvent.contentOffset.y })
     if (canMovePrev(nativeEvent) && !isNovelIndex(this.props.novel)) {
       this.setState({ canMovePrev: true })
     } else if (canMoveNext(nativeEvent) && !isLastEpisode(this.props.novel)) {
