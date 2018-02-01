@@ -3,15 +3,20 @@ jobs:
   build:
     docker:
       - image: circleci/node:9.4.0
+    working_directory: ~/workspace
     steps:
       - checkout
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
-      - run: yarn install
+      - run:
+          name: Install package
+          command: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn run lint
+      - run:
+          name: Run code lint
+          command: yarn run lint
