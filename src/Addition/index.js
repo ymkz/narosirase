@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, WebView, Keyboard } from 'react-native'
+import { StyleSheet, View, Keyboard, WebView } from 'react-native'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
@@ -68,11 +68,22 @@ class AdditionContainer extends React.PureComponent {
         ...data,
         index,
         reader,
-        scrollOffset: index === 0 ? 0 : constraints.promoterOffset,
+        scrollOffset: index === 0 ? 0 : constraints.scrollOffset,
         status: status.reading
       }
       this.props.dispatch(novelAdd(payload))
       this.props.navigation.goBack()
+    }
+  }
+
+  handleSwipe = (_, { x0, dx }) => {
+    if (x0 < 30 && dx > constraints.swipeOffset) {
+      this.web.goBack()
+    } else if (
+      constraints.deviceWidth - x0 < 30 &&
+      dx < -constraints.swipeOffset
+    ) {
+      this.web.goForward()
     }
   }
 
@@ -92,11 +103,7 @@ class AdditionContainer extends React.PureComponent {
           handleBlur={this.handleBlur}
           handleSubmitEditing={this.handleSubmitEditing}
         />
-        <GestureRecognizer
-          onSwipeRight={() => this.web.goBack()}
-          onSwipeLeft={() => this.web.goForward()}
-          style={styles.container}
-        >
+        <GestureRecognizer onSwipe={this.handleSwipe} style={styles.container}>
           <WebView
             ref={ref => (this.web = ref)}
             source={{ uri: this.state.uri }}
