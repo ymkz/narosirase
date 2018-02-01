@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: iOSColors.customGray,
-    height: constraints.promoterOffset,
+    height: constraints.scrollOffset,
     justifyContent: 'center'
   },
   active: {
