@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+    "name": "narosirase",
+    "icon": "./assets/icon.png",
+    "version": "1.0.0",
+    "slug": "narosirase",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "co.ymkz.narosirase"
+    },
+    "android": {
+      "package": "co.ymkz.narosirase"
+    }
   }
 }
