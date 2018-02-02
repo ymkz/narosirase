@@ -43,9 +43,12 @@ class AdditionContainer extends React.PureComponent {
   }
 
   handleNavigationStateChange = ({ url }) => {
+    const ncode = parse(url).path.split('/')[1]
     this.setState({
       input: url,
-      valid: RegExp('ncode.syosetu.com').test(url)
+      valid:
+        RegExp('ncode.syosetu.com').test(url) &&
+        !this.props.novel.filter(item => item.ncode === ncode).length
     })
   }
 

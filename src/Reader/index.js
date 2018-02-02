@@ -64,7 +64,11 @@ class ReaderContainer extends React.PureComponent {
   }
 
   handleScroll = async ({ nativeEvent }) => {
-    this.setState({ position: nativeEvent.contentOffset.y })
+    if (nativeEvent.contentOffset.y !== 0) {
+      this.setState({
+        position: nativeEvent.contentOffset.y
+      })
+    }
     if (canMovePrev(nativeEvent) && !isNovelIndex(this.props.novel)) {
       this.setState({ canMovePrev: true })
     } else if (canMoveNext(nativeEvent) && !isLastEpisode(this.props.novel)) {
