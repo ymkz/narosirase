@@ -14,12 +14,10 @@ export default createReducer(
     [novelAdd]: (state, payload) => [payload, ...state],
     [novelPatch]: (state, payload) =>
       state.map(item => (item.ncode === payload.ncode ? payload : item)),
-    [novelRemove]: (state, payload) =>
-      state.filter(item => item.ncode !== payload.ncode),
+    [novelRemove]: (state, payload) => state.filter(item => item.ncode !== payload.ncode),
     [novelHydrate]: (state, payload) =>
       [...state, ...payload].filter(
-        (item, index, self) =>
-          self.map(v => v.ncode).indexOf(item.ncode) === index
+        (item, index, self) => self.map(v => v.ncode).indexOf(item.ncode) === index
       )
   },
   initialState

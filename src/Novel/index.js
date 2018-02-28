@@ -36,9 +36,7 @@ class NovelContainer extends React.PureComponent {
   handleToReading = async () => {
     StatusBar.setBarStyle('light-content', true)
     this.props.dispatch(alertShow('小説を読むに移動しました'))
-    this.props.dispatch(
-      novelPatch({ ...this.state.novel, status: status.reading })
-    )
+    this.props.dispatch(novelPatch({ ...this.state.novel, status: status.reading }))
     this.actionSheet.close()
     await sleep(alertDelay)
     this.props.dispatch(alertHide())
@@ -48,9 +46,7 @@ class NovelContainer extends React.PureComponent {
   handleToPending = async () => {
     StatusBar.setBarStyle('light-content', true)
     this.props.dispatch(alertShow('小説をあとで読むに移動しました'))
-    this.props.dispatch(
-      novelPatch({ ...this.state.novel, status: status.pending })
-    )
+    this.props.dispatch(novelPatch({ ...this.state.novel, status: status.pending }))
     this.actionSheet.close()
     await sleep(alertDelay)
     this.props.dispatch(alertHide())
@@ -60,9 +56,7 @@ class NovelContainer extends React.PureComponent {
   handleToArchive = async () => {
     StatusBar.setBarStyle('light-content', true)
     this.props.dispatch(alertShow('小説をアーカイブに移動しました'))
-    this.props.dispatch(
-      novelPatch({ ...this.state.novel, status: status.archive })
-    )
+    this.props.dispatch(novelPatch({ ...this.state.novel, status: status.archive }))
     this.actionSheet.close()
     await sleep(alertDelay)
     this.props.dispatch(alertHide())
@@ -116,24 +110,10 @@ class NovelContainer extends React.PureComponent {
           onClose={() => this.setState({ novel: null })}
         >
           <View style={styles.actionsheet}>
-            <Box
-              icon="chrome-reader-mode"
-              text="reading"
-              onPress={this.handleToReading}
-            />
-            <Box
-              icon="watch-later"
-              text="pending"
-              onPress={this.handleToPending}
-            />
+            <Box icon="chrome-reader-mode" text="reading" onPress={this.handleToReading} />
+            <Box icon="watch-later" text="pending" onPress={this.handleToPending} />
             <Box icon="archive" text="archive" onPress={this.handleToArchive} />
-            <Box
-              destructive
-              last
-              icon="delete-forever"
-              text="delete"
-              onPress={this.handleRemove}
-            />
+            <Box destructive last icon="delete-forever" text="delete" onPress={this.handleRemove} />
           </View>
         </ActionSheet>
       </View>

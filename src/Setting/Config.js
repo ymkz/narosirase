@@ -5,11 +5,7 @@ import { ActionSheet } from 'react-native-cell-components'
 import Switch from 'react-native-switch-pro'
 import { Entypo } from '@expo/vector-icons'
 import { fontSizeRange, lineHeightRange } from '../constants'
-import {
-  changeFontSize,
-  changeLineHeight,
-  changeExpandComment
-} from './modules'
+import { changeFontSize, changeLineHeight, changeExpandComment } from './modules'
 import ConfigItem from './ConfigItem'
 
 class ConfigComponent extends React.PureComponent {
@@ -35,9 +31,7 @@ class ConfigComponent extends React.PureComponent {
             <View style={styles.item}>
               <Text style={styles.description}>本文のフォントサイズ</Text>
               <View style={styles.information}>
-                <Text style={styles.text}>
-                  {this.props.setting.fontSize} pt
-                </Text>
+                <Text style={styles.text}>{this.props.setting.fontSize} pt</Text>
                 <Entypo
                   name="chevron-thin-right"
                   size={16}
@@ -53,9 +47,7 @@ class ConfigComponent extends React.PureComponent {
             <View style={styles.item}>
               <Text style={styles.description}>本文の行間の高さ</Text>
               <View style={styles.information}>
-                <Text style={styles.text}>
-                  {this.props.setting.lineHeight} pt
-                </Text>
+                <Text style={styles.text}>{this.props.setting.lineHeight} pt</Text>
                 <Entypo
                   name="chevron-thin-right"
                   size={16}
@@ -67,9 +59,7 @@ class ConfigComponent extends React.PureComponent {
           </TouchableOpacity>
         </View>
         <View style={styles.lastItem}>
-          <Text style={styles.description}>
-            「まえがき」と「あとがき」を展開する
-          </Text>
+          <Text style={styles.description}>「まえがき」と「あとがき」を展開する</Text>
           <View style={styles.information}>
             <Switch
               value={this.props.setting.expandComment}

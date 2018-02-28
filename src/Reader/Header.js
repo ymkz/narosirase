@@ -8,19 +8,13 @@ const AdditionHeaderComponent = ({ navigation, novel }) => (
   <View style={styles.container}>
     <TouchableOpacity onPress={() => navigation.goBack()}>
       <View style={styles.back}>
-        <Entypo
-          name="chevron-thin-left"
-          size={14}
-          color={materialColors.blackPrimary}
-        />
+        <Entypo name="chevron-thin-left" size={14} color={materialColors.blackPrimary} />
         <Text style={[human.caption1, styles.text]}>Back</Text>
       </View>
     </TouchableOpacity>
     <View>
       <Text style={[human.caption1, styles.episode]}>
-        {novel.short
-          ? '短編'
-          : novel.index === 0 ? '目次' : `${novel.index} / ${novel.episodes}`}
+        {novel.short ? '短編' : novel.index === 0 ? '目次' : `${novel.index} / ${novel.episodes}`}
       </Text>
     </View>
   </View>

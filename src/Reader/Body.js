@@ -3,13 +3,7 @@ import { StyleSheet, Text } from 'react-native'
 import { materialColors } from 'react-native-typography'
 
 const BodyComponent = ({ body, setting }) => (
-  <Text
-    style={[
-      styles.text,
-      { fontSize: setting.fontSize },
-      { lineHeight: setting.lineHeight }
-    ]}
-  >
+  <Text style={[styles.text, { fontSize: setting.fontSize }, { lineHeight: setting.lineHeight }]}>
     {body}
   </Text>
 )

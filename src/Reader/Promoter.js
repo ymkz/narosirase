@@ -4,15 +4,7 @@ import { iOSColors, materialColors } from 'react-native-typography'
 import { Entypo } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
-const PromoterComponent = ({
-  text,
-  first,
-  last,
-  canMove,
-  handleMove,
-  prev,
-  next
-}) => {
+const PromoterComponent = ({ text, first, last, canMove, handleMove, prev, next }) => {
   if (first || last) return null
   return (
     <TouchableOpacity onPress={handleMove} style={styles.container}>

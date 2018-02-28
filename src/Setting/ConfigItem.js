@@ -10,11 +10,7 @@ const ConfigItemComponent = ({ size, name, current, handler }) => (
     style={styles.container}
   >
     <View style={styles.row}>
-      <MaterialIcons
-        name={name}
-        size={16}
-        color={materialColors.blackPrimary}
-      />
+      <MaterialIcons name={name} size={16} color={materialColors.blackPrimary} />
       <Text style={styles.point}>{size} pt</Text>
       {current && (
         <View style={styles.current}>

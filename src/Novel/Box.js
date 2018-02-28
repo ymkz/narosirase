@@ -1,11 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { MaterialIcons } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
@@ -13,11 +8,7 @@ const Box = ({ destructive, last, icon, text, onPress }) => (
   <TouchableHighlight
     onPress={onPress}
     underlayColor={iOSColors.customGray}
-    style={[
-      styles.container,
-      destructive && styles.destructive,
-      last && styles.last
-    ]}
+    style={[styles.container, destructive && styles.destructive, last && styles.last]}
   >
     <View style={styles.box}>
       <MaterialIcons

@@ -1,12 +1,7 @@
 import React from 'react'
 import { WebBrowser } from 'expo'
 import { StyleSheet, View, Image, Text } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 
 const DeveloperComponent = () => (
   <View style={styles.container}>
@@ -17,9 +12,7 @@ const DeveloperComponent = () => (
       }}
     />
     <View style={styles.information}>
-      <Text style={[human.body, systemWeights.semibold, styles.name]}>
-        ymkz (kazuya yamashita)
-      </Text>
+      <Text style={[human.body, systemWeights.semibold, styles.name]}>ymkz (kazuya yamashita)</Text>
       <Text>
         front-end web engineer -{' '}
         <Text

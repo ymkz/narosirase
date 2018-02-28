@@ -1,11 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { alertDelay } from '../constants'
 import { sleep } from '../functions'
 import { novelPurge } from '../Novel/modules'
@@ -30,18 +25,12 @@ const handlePurge = dispatch => {
 const PurgeComponent = ({ dispatch }) => (
   <View style={styles.container}>
     <View style={styles.description}>
-      <Text style={[human.footnote, styles.message]}>
-        すべての小説データの初期化を行います
-      </Text>
-      <Text style={[human.footnote, styles.message]}>
-        この操作は取り消しできません
-      </Text>
+      <Text style={[human.footnote, styles.message]}>すべての小説データの初期化を行います</Text>
+      <Text style={[human.footnote, styles.message]}>この操作は取り消しできません</Text>
     </View>
     <TouchableOpacity onPress={() => handlePurge(dispatch)}>
       <View style={styles.button}>
-        <Text style={[human.footnote, systemWeights.semibold, styles.text]}>
-          purge
-        </Text>
+        <Text style={[human.footnote, systemWeights.semibold, styles.text]}>purge</Text>
       </View>
     </TouchableOpacity>
   </View>

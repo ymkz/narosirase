@@ -1,17 +1,6 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity
-} from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { MaterialIcons } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
@@ -46,9 +35,7 @@ const AdditionHeaderComponent = ({
     </View>
     {editing && (
       <TouchableOpacity onPress={handleBlur}>
-        <Text style={[human.subhead, systemWeights.thin, styles.cancel]}>
-          Cancel
-        </Text>
+        <Text style={[human.subhead, systemWeights.thin, styles.cancel]}>Cancel</Text>
       </TouchableOpacity>
     )}
   </View>

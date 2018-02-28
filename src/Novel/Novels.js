@@ -24,12 +24,8 @@ class NovelsComponent extends React.PureComponent {
     for (let i = 0; i < this.props.novel.length; i++) {
       await sleep(patchDelay)
       this.props.dispatch(alertPatch(`${i + 1} / ${this.props.novel.length}`))
-      const url = `http://api.syosetu.com/novelapi/api?ncode=${
-        this.props.novel[i].ncode
-      }&out=json`
-      const response = await fetch(url, option).catch(() =>
-        this.setState({ refreshing: false })
-      )
+      const url = `http://api.syosetu.com/novelapi/api?ncode=${this.props.novel[i].ncode}&out=json`
+      const response = await fetch(url, option).catch(() => this.setState({ refreshing: false }))
       const json = await response.json()
       const data = novelObjectMapper(json[1])
       const payload = {
@@ -54,10 +50,7 @@ class NovelsComponent extends React.PureComponent {
         ListEmptyComponent={Empty}
         refreshing={this.state.refreshing}
         refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-          />
+          <RefreshControl refreshing={this.state.refreshing} onRefresh={this.handleRefresh} />
         }
         renderItem={({ item }) => (
           <Item

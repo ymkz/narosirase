@@ -1,11 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Share } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import { alertDelay } from '../constants'
 import { sleep } from '../functions'
@@ -32,18 +27,12 @@ const handleExport = async (dispatch, novel) => {
 const ExportComponent = ({ dispatch, novel }) => (
   <View style={styles.container}>
     <View style={styles.description}>
-      <Text style={[human.footnote, styles.message]}>
-        小説データをエクスポートします
-      </Text>
-      <Text style={[human.footnote, styles.message]}>
-        Dropboxに保存を選択してください
-      </Text>
+      <Text style={[human.footnote, styles.message]}>小説データをエクスポートします</Text>
+      <Text style={[human.footnote, styles.message]}>Dropboxに保存を選択してください</Text>
     </View>
     <TouchableOpacity onPress={() => handleExport(dispatch, novel)}>
       <View style={styles.button}>
-        <Text style={[human.footnote, systemWeights.semibold, styles.text]}>
-          export
-        </Text>
+        <Text style={[human.footnote, systemWeights.semibold, styles.text]}>export</Text>
       </View>
     </TouchableOpacity>
   </View>

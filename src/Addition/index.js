@@ -5,11 +5,7 @@ import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import { parse } from 'uri-js'
 import { constraints, option, status } from '../constants'
-import {
-  errorHandler,
-  novelObjectMapper,
-  fetchNovelContents
-} from '../functions'
+import { errorHandler, novelObjectMapper, fetchNovelContents } from '../functions'
 import { novelAdd } from '../Novel/modules'
 import Header from './Header'
 import Searchbar from './Searchbar'
@@ -82,10 +78,7 @@ class AdditionContainer extends React.PureComponent {
   handleSwipe = (_, { x0, dx }) => {
     if (x0 < 30 && dx > constraints.swipeOffset) {
       this.web.goBack()
-    } else if (
-      constraints.deviceWidth - x0 < 30 &&
-      dx < -constraints.swipeOffset
-    ) {
+    } else if (constraints.deviceWidth - x0 < 30 && dx < -constraints.swipeOffset) {
       this.web.goForward()
     }
   }

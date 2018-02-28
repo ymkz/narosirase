@@ -14,10 +14,7 @@ import Purge from './Purge'
 const SettingContainer = ({ setting, navigation, dispatch }) => (
   <View style={styles.container}>
     <Header navigation={navigation} />
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.scrollContainer}
-    >
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContainer}>
       <Config dispatch={dispatch} setting={setting} />
       <Developer />
       <About />

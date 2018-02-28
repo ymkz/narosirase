@@ -1,18 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 
 const DisclaimerComponent = () => (
   <View style={styles.container}>
     <Text style={styles.message}>
-      <Text style={[human.callout, systemWeights.bold, styles.strong]}>
-        Disclaimer{'  '}
-      </Text>
+      <Text style={[human.callout, systemWeights.bold, styles.strong]}>Disclaimer{'  '}</Text>
       「小説家になろう」は株式会社ヒナプロジェクトの登録商標であり、本アプリケーションは株式会社ヒナプロジェクトが提供するものではありません。
     </Text>
   </View>

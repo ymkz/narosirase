@@ -6,22 +6,21 @@ extends:
   - plugin:react-native/all
   - plugin:import/warnings
   - plugin:import/errors
-  - prettier
-  - prettier/react
+  - plugin:prettier/recommended
 plugins:
   - react
   - react-native
   - import
   - prettier
 rules:
-  no-console: off
   react/prop-types: off
   import/order: error
-  prettier/prettier: 
+  prettier/prettier:
     - error
     -
-      singleQuote: true
       semi: false
+      printWidth: 100
+      singleQuote: true
 settings:
   import/ignore:
     - expo
@@ -34,7 +33,7 @@ env:
   react-native/react-native: true
 parserOptions:
   sourceType: module
-  ecmaVersion: 2017
+  ecmaVersion: 2018
   ecmaFeatures:
     experimentalObjectRestSpread: true
     experimentalDecorators: true

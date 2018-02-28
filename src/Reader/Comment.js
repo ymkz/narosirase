@@ -24,14 +24,10 @@ class CommentComponent extends React.PureComponent {
             color={iOSColors.gray}
             size={16}
           />
-          <Text style={styles.text}>
-            {this.props.foreword ? 'まえがき' : 'あとがき'}
-          </Text>
+          <Text style={styles.text}>{this.props.foreword ? 'まえがき' : 'あとがき'}</Text>
         </TouchableOpacity>
         {this.state.open && (
-          <TouchableOpacity
-            onPress={() => this.setState({ open: !this.state.open })}
-          >
+          <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
             <Text style={styles.comment}>{this.props.comment}</Text>
           </TouchableOpacity>
         )}

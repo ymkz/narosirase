@@ -17,12 +17,10 @@ const ItemComponent = ({ novel, navigation, handleActionSheet }) => (
         <Text style={styles.info}>
           {novel.short
             ? '短編'
-            : `${novel.index === 0 ? '目次' : `${novel.index}話`}／全${
-                novel.episodes
-              }話`}
-          <Text style={styles.updated}>{` 更新：${moment(
-            novel.lastUpdatedAt
-          ).format('M月D日h時m分')}`}</Text>
+            : `${novel.index === 0 ? '目次' : `${novel.index}話`}／全${novel.episodes}話`}
+          <Text style={styles.updated}>{` 更新：${moment(novel.lastUpdatedAt).format(
+            'M月D日h時m分'
+          )}`}</Text>
         </Text>
       </View>
       {novel.index !== novel.episodes && (

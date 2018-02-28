@@ -1,56 +1,28 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import {
-  human,
-  systemWeights,
-  iOSColors,
-  materialColors
-} from 'react-native-typography'
+import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { MaterialIcons } from '@expo/vector-icons'
 import { constraints } from '../constants'
 
-const NovelHeaderComponent = ({
-  handleIndexChange,
-  navigation,
-  index,
-  routes
-}) => (
+const NovelHeaderComponent = ({ handleIndexChange, navigation, index, routes }) => (
   <View style={styles.container}>
     <View style={styles.content}>
       <View style={styles.titles}>
         <TouchableOpacity>
-          <Text
-            style={[
-              human.largeTitle,
-              systemWeights.bold,
-              styles.title,
-              styles.primary
-            ]}
-          >
+          <Text style={[human.largeTitle, systemWeights.bold, styles.title, styles.primary]}>
             {routes[index].title}
           </Text>
         </TouchableOpacity>
         <View style={styles.subs}>
           <TouchableOpacity
-            onPress={() =>
-              handleIndexChange(routes[index > 1 ? 0 : index + 1].index)
-            }
+            onPress={() => handleIndexChange(routes[index > 1 ? 0 : index + 1].index)}
           >
-            <Text
-              style={[
-                human.caption2,
-                systemWeights.thin,
-                styles.title,
-                styles.second
-              ]}
-            >
+            <Text style={[human.caption2, systemWeights.thin, styles.title, styles.second]}>
               {routes[index > 1 ? 0 : index + 1].title}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              handleIndexChange(routes[index < 1 ? index + 2 : index - 1].index)
-            }
+            onPress={() => handleIndexChange(routes[index < 1 ? index + 2 : index - 1].index)}
           >
             <Text style={[human.caption2, systemWeights.thin, styles.second]}>
               {routes[index < 1 ? index + 2 : index - 1].title}

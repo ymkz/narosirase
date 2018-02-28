@@ -90,23 +90,14 @@ class ReaderContainer extends React.PureComponent {
           <View style={styles.shortWrapper}>
             <ScrollView scrollEventThrottle={16} onScroll={this.handleScroll}>
               <View style={styles.novelContents}>
-                <Title
-                  title={this.props.novel.title}
-                  writer={this.props.novel.writer}
-                />
+                <Title title={this.props.novel.title} writer={this.props.novel.writer} />
                 <Comment
                   comment={this.props.novel.reader.foreword}
                   setting={this.props.setting}
                   foreword
                 />
-                <Body
-                  body={this.props.novel.reader.body}
-                  setting={this.props.setting}
-                />
-                <Comment
-                  comment={this.props.novel.reader.afterword}
-                  setting={this.props.setting}
-                />
+                <Body body={this.props.novel.reader.body} setting={this.props.setting} />
+                <Comment comment={this.props.novel.reader.afterword} setting={this.props.setting} />
               </View>
             </ScrollView>
           </View>
@@ -118,31 +109,21 @@ class ReaderContainer extends React.PureComponent {
               onResponderRelease={this.handleResponderRelease}
             >
               <View style={styles.indexContents}>
-                <Title
-                  title={this.props.novel.title}
-                  writer={this.props.novel.writer}
-                />
+                <Title title={this.props.novel.title} writer={this.props.novel.writer} />
                 <Story novel={this.props.novel} />
                 <Text
-                  onPress={() =>
-                    this.promoteReading(this.props.novel.index + 1)
-                  }
+                  onPress={() => this.promoteReading(this.props.novel.index + 1)}
                   style={styles.start}
                 >
                   読み始める
                 </Text>
                 <Outline novel={this.props.novel} />
-                <Indexes
-                  novel={this.props.novel}
-                  promoteReading={this.promoteReading}
-                />
+                <Indexes novel={this.props.novel} promoteReading={this.promoteReading} />
               </View>
               <Promoter
                 text="読み始める"
                 canMove={this.state.canMoveNext || this.state.canMovePrev}
-                handleMove={() =>
-                  this.promoteReading(this.props.novel.index + 1)
-                }
+                handleMove={() => this.promoteReading(this.props.novel.index + 1)}
                 next
               />
             </ScrollView>
@@ -171,25 +152,17 @@ class ReaderContainer extends React.PureComponent {
                   setting={this.props.setting}
                   foreword
                 />
-                <Body
-                  body={this.props.novel.reader.body}
-                  setting={this.props.setting}
-                />
+                <Body body={this.props.novel.reader.body} setting={this.props.setting} />
                 {!!this.props.novel.reader.images && (
                   <Images images={this.props.novel.reader.images} />
                 )}
-                <Comment
-                  comment={this.props.novel.reader.afterword}
-                  setting={this.props.setting}
-                />
+                <Comment comment={this.props.novel.reader.afterword} setting={this.props.setting} />
               </View>
               <Promoter
                 text="次のエピソード"
                 last={isLastEpisode(this.props.novel)}
                 canMove={this.state.canMovePrev || this.state.canMoveNext}
-                handleMove={() =>
-                  this.promoteReading(this.props.novel.index + 1)
-                }
+                handleMove={() => this.promoteReading(this.props.novel.index + 1)}
                 next
               />
             </ScrollView>
@@ -201,10 +174,7 @@ class ReaderContainer extends React.PureComponent {
 }
 
 export default connect(
-  (
-    { novel, setting },
-    { navigation: { state: { params: { novel: { ncode } } } } }
-  ) => ({
+  ({ novel, setting }, { navigation: { state: { params: { novel: { ncode } } } } }) => ({
     novel: novel.filter(item => item.ncode === ncode)[0],
     setting
   })

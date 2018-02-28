@@ -4,17 +4,10 @@ import { constraints, genre } from './constants'
 
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export const errorHandler = error => console.log(error)
+export const errorHandler = error => console.log(error) // eslint-disable-line
 
-export const canMoveNext = ({
-  layoutMeasurement,
-  contentOffset,
-  contentSize
-}) => {
-  return (
-    layoutMeasurement.height + contentOffset.y >
-    contentSize.height + constraints.scrollOffset
-  )
+export const canMoveNext = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  return layoutMeasurement.height + contentOffset.y > contentSize.height + constraints.scrollOffset
 }
 
 export const canMovePrev = ({ contentOffset }) => {
