@@ -1,12 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, StatusBar } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { TabViewAnimated } from 'react-native-tab-view'
 import { materialColors } from 'react-native-typography'
 import { ActionSheet } from 'react-native-cell-components'
 import { connect } from 'react-redux'
-import { constraints, status, alertDelay } from '../constants'
-import { sleep } from '../functions'
-import { alertShow, alertHide } from '../Alert/modules'
+import { constraints, status } from '../constants'
+import Snackbar from '../Snackbar'
 import { novelPatch, novelRemove } from './modules'
 import Header from './Header'
 import Novels from './Novels'
@@ -34,43 +33,27 @@ class NovelContainer extends React.PureComponent {
   }
 
   handleToReading = async () => {
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('小説を読むに移動しました'))
+    Snackbar.show('小説を読むに移動しました')
     this.props.dispatch(novelPatch({ ...this.state.novel, status: status.reading }))
     this.actionSheet.close()
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleToPending = async () => {
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('小説をあとで読むに移動しました'))
+    Snackbar.show('小説をあとで読むに移動しました')
     this.props.dispatch(novelPatch({ ...this.state.novel, status: status.pending }))
     this.actionSheet.close()
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleToArchive = async () => {
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('小説をアーカイブに移動しました'))
+    Snackbar.show('小説をアーカイブに移動しました')
     this.props.dispatch(novelPatch({ ...this.state.novel, status: status.archive }))
     this.actionSheet.close()
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleRemove = async () => {
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('小説を削除しました'))
+    Snackbar.show('小説を削除しました')
     this.props.dispatch(novelRemove(this.state.novel))
     this.actionSheet.close()
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
   }
 
   handleIndexChange = index => {

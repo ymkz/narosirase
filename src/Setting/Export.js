@@ -2,25 +2,17 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Share } from 'react-native'
 import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
-import { alertDelay } from '../constants'
-import { sleep } from '../functions'
-import { alertShow, alertHide } from '../Alert/modules'
-
-const errorHandler = async (dispatch, message = 'Error happened') => {
-  dispatch(alertShow(message))
-  await sleep(alertDelay)
-  dispatch(alertHide())
-}
+import Snackbar from '../Snackbar'
 
 const handleExport = async (dispatch, novel) => {
   const shared = await Share.share({
     title: 'narosirase-export',
     message: JSON.stringify(novel)
-  }).catch(() => errorHandler(dispatch, 'エクスポート時にエラーが発生しました'))
+  }).catch(() =>
+    Snackbar.show('エクスポート時にエラーが発生しました', { backgroundColor: '#f44336' })
+  )
   if (shared.action === 'sharedAction') {
-    dispatch(alertShow('小説データをエクスポートしました'))
-    await sleep(alertDelay)
-    dispatch(alertHide())
+    Snackbar.show('小説データをエクスポートしました')
   }
 }
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, StatusBar, FlatList, RefreshControl } from 'react-native'
+import { StyleSheet, FlatList, RefreshControl } from 'react-native'
 import { connect } from 'react-redux'
-import { option, patchDelay, alertDelay } from '../constants'
+import { option, patchDelay } from '../constants'
 import { sleep, novelObjectMapper } from '../functions'
-import { alertShow, alertPatch, alertHide } from '../Alert/modules'
+import Snackbar from '../Snackbar'
 import { novelPatch } from './modules'
 import Empty from './Empty'
 import Separator from './Separator'
@@ -19,11 +19,8 @@ class NovelsComponent extends React.PureComponent {
 
   handleRefresh = async () => {
     this.setState({ refreshing: true })
-    StatusBar.setBarStyle('light-content', true)
-    this.props.dispatch(alertShow('更新を開始しました'))
     for (let i = 0; i < this.props.novel.length; i++) {
       await sleep(patchDelay)
-      this.props.dispatch(alertPatch(`${i + 1} / ${this.props.novel.length}`))
       const url = `http://api.syosetu.com/novelapi/api?ncode=${this.props.novel[i].ncode}&out=json`
       const response = await fetch(url, option).catch(() => this.setState({ refreshing: false }))
       const json = await response.json()
@@ -35,10 +32,7 @@ class NovelsComponent extends React.PureComponent {
       this.props.dispatch(novelPatch(payload))
     }
     this.setState({ refreshing: false })
-    this.props.dispatch(alertPatch('更新が完了しました'))
-    await sleep(alertDelay)
-    this.props.dispatch(alertHide())
-    StatusBar.setBarStyle('dark-content', true)
+    Snackbar.show('更新が完了しました')
   }
 
   render() {

@@ -5,7 +5,6 @@ export const constraints = {
   deviceHeight: Dimensions.get('window').height,
   deviceWidth: Dimensions.get('window').width,
   statusBarHeight: Constants.statusBarHeight,
-  alertHeight: Constants.statusBarHeight * 2,
   headerHeight: 96,
   searchHeight: 36,
   separatorHeight: 48,
@@ -53,4 +52,3 @@ export const fontSizeRange = [12, 13, 14, 15, 16]
 export const lineHeightRange = [18, 19, 20, 21, 22]
 
 export const patchDelay = 200
-export const alertDelay = 1000

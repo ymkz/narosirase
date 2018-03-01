@@ -5,8 +5,9 @@ import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
 import { parse } from 'uri-js'
 import { constraints, option, status } from '../constants'
-import { errorHandler, novelObjectMapper, fetchNovelContents } from '../functions'
+import { novelObjectMapper, fetchNovelContents } from '../functions'
 import { novelAdd } from '../Novel/modules'
+import Snackbar from '../Snackbar'
 import Header from './Header'
 import Searchbar from './Searchbar'
 
@@ -56,7 +57,9 @@ class AdditionContainer extends React.PureComponent {
       const ncode = pathnames[1]
       const index = Number(pathnames[2]) || 0
       const url = `http://api.syosetu.com/novelapi/api?ncode=${ncode}&out=json`
-      const response = await fetch(url, option).catch(errorHandler)
+      const response = await fetch(url, option).catch(() =>
+        Snackbar.show('小説追加時にエラーが発生しました', { backgroundColor: '#f44336' })
+      )
       const json = await response.json()
       const data = novelObjectMapper(json[1])
       const reader = await fetchNovelContents(
@@ -70,6 +73,7 @@ class AdditionContainer extends React.PureComponent {
         scrollOffset: index === 0 ? 0 : constraints.scrollOffset,
         status: status.reading
       }
+      Snackbar.show('小説を追加しました')
       this.props.dispatch(novelAdd(payload))
       this.props.navigation.goBack()
     }

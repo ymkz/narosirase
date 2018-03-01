@@ -1,10 +1,9 @@
 import cheerio from 'cheerio-without-node-native'
 import { parse } from 'uri-js'
 import { constraints, genre } from './constants'
+import Snackbar from './Snackbar'
 
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-export const errorHandler = error => console.log(error) // eslint-disable-line
 
 export const canMoveNext = ({ layoutMeasurement, contentOffset, contentSize }) => {
   return layoutMeasurement.height + contentOffset.y > contentSize.height + constraints.scrollOffset
@@ -52,7 +51,9 @@ export const fetchNovelContents = async (url, short = false) => {
   const novel = `${parsed.scheme}://${parsed.host}/${ncode}`
   const index = Number(pathnames[2]) || 0
   if (short) {
-    const response = await fetch(novel).catch(errorHandler)
+    const response = await fetch(novel).catch(() =>
+      Snackbar.show('パースデータの取得でエラーが発生しました', { backgroundColor: '#f44336' })
+    )
     const html = await response.text()
     const $ = cheerio.load(html)
     const foreword = $('#novel_p').text()
@@ -60,7 +61,9 @@ export const fetchNovelContents = async (url, short = false) => {
     const afterword = $('#novel_a').text()
     return { foreword, body, afterword }
   } else if (index === 0) {
-    const response = await fetch(novel).catch(errorHandler)
+    const response = await fetch(novel).catch(() =>
+      Snackbar.show('パースデータの取得でエラーが発生しました', { backgroundColor: '#f44336' })
+    )
     const html = await response.text()
     const $ = cheerio.load(html)
     let chapters = $('.chapter_title')
@@ -112,7 +115,9 @@ export const fetchNovelContents = async (url, short = false) => {
     }
     return { chapters }
   } else {
-    const response = await fetch(url).catch(errorHandler)
+    const response = await fetch(url).catch(() =>
+      Snackbar.show('パースデータの取得でエラーが発生しました', { backgroundColor: '#f44336' })
+    )
     const html = await response.text()
     const $ = cheerio.load(html)
     const subtitle = $('.novel_subtitle')

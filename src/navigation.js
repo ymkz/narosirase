@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native'
 import { addNavigationHelpers, StackNavigator } from 'react-navigation'
 import { materialColors } from 'react-native-typography'
 import { connect } from 'react-redux'
-import Alert from './Alert'
 import Novel from './Novel'
 import Addition from './Addition'
 import Reader from './Reader'
@@ -34,7 +33,6 @@ const Navigation = StackNavigator(
 
 const RootContainer = ({ dispatch, nav: state }) => (
   <View style={styles.container}>
-    <Alert />
     <Navigation navigation={addNavigationHelpers({ dispatch, state })} />
   </View>
 )

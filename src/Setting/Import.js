@@ -2,20 +2,12 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
 import { DocumentPicker, FileSystem } from 'expo'
-import { alertDelay } from '../constants'
-import { sleep } from '../functions'
 import { novelHydrate } from '../Novel/modules'
-import { alertShow, alertHide } from '../Alert/modules'
-
-const errorHandler = async (dispatch, message = 'Error happened') => {
-  dispatch(alertShow(message))
-  await sleep(alertDelay)
-  dispatch(alertHide())
-}
+import Snackbar from '../Snackbar'
 
 const handleImport = async dispatch => {
   const picked = await DocumentPicker.getDocumentAsync().catch(() =>
-    errorHandler(dispatch, 'インポート時にエラーが発生しました')
+    Snackbar.show('インポート時にエラーが発生しました', { backgroundColor: '#f44336' })
   )
   if (picked.type === 'cancel') {
     return false
@@ -23,15 +15,17 @@ const handleImport = async dispatch => {
     const downloaded = await FileSystem.downloadAsync(
       picked.uri,
       `${FileSystem.documentDirectory}import.json`
-    ).catch(() => errorHandler(dispatch, '一時ファイルダウンロード時にエラーが発生しました'))
+    ).catch(() =>
+      Snackbar.show('一時ファイルダウンロード時にエラーが発生しました', {
+        backgroundColor: '#f44336'
+      })
+    )
     const read = await FileSystem.readAsStringAsync(downloaded.uri).catch(() =>
-      errorHandler(dispatch, '一時ファイル読み込み時にエラーが発生しました')
+      Snackbar.show('一時ファイル読み込み時にエラーが発生しました', { backgroundColor: '#f44336' })
     )
     const json = JSON.parse(read)
     dispatch(novelHydrate(json))
-    dispatch(alertShow('小説データをインポートしました'))
-    await sleep(alertDelay)
-    dispatch(alertHide())
+    Snackbar.show('小説データをインポートしました')
   } else {
     return false
   }

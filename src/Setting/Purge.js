@@ -1,10 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
 import { human, systemWeights, iOSColors, materialColors } from 'react-native-typography'
-import { alertDelay } from '../constants'
-import { sleep } from '../functions'
 import { novelPurge } from '../Novel/modules'
-import { alertShow, alertHide } from '../Alert/modules'
+import Snackbar from '../Snackbar'
 
 const handlePurge = dispatch => {
   Alert.alert('小説データの初期化', 'この操作は取り消せません', [
@@ -14,9 +12,7 @@ const handlePurge = dispatch => {
       style: 'destructive',
       onPress: async () => {
         dispatch(novelPurge())
-        dispatch(alertShow('データを初期化しました'))
-        await sleep(alertDelay)
-        dispatch(alertHide())
+        Snackbar.show('データを初期化しました')
       }
     }
   ])
