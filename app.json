@@ -1,15 +1,31 @@
 {
   "expo": {
     "name": "narosirase",
-    "icon": "./assets/icon.png",
-    "version": "1.0.0",
+    "description": "A web-novel reader for Syosetuka-ni-Narou.",
     "slug": "narosirase",
-    "sdkVersion": "25.0.0",
-    "ios": {
-      "bundleIdentifier": "co.ymkz.narosirase"
+    "privacy": "unlisted",
+    "sdkVersion": "28.0.0",
+    "platforms": ["ios", "android"],
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
-    "android": {
-      "package": "co.ymkz.narosirase"
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "packagerOpts": {
+      "sourceExts": ["ts", "tsx"],
+      "transformer": "node_modules/react-native-typescript-transformer/index.js"
     }
   }
 }

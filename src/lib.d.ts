@@ -1,0 +1,7 @@
+declare module '*.png'
+declare module '*.json'
+declare module 'url'
+declare module 'react-native-cheerio'
+declare module 'react-native-swipe-list-view'
+declare module 'rn-snackbar'
+declare module 'redux-persist/es/integration/react'
