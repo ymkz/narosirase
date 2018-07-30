@@ -4,25 +4,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { color, constraint } from 'src/constants'
 
-class Header extends React.PureComponent {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Entypo
-            name="chevron-down"
-            size={28}
-            color={color.darkBlack}
-            onPress={Actions.pop}
-          />
-          <View style={styles.title}>
-            <Text style={styles.text}>Setting</Text>
-          </View>
-        </View>
+const Header: React.SFC = () => (
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Entypo name="chevron-down" size={28} color={color.darkBlack} onPress={Actions.pop} />
+      <View style={styles.title}>
+        <Text style={styles.text}>Setting</Text>
       </View>
-    )
-  }
-}
+    </View>
+  </View>
+)
 
 export default Header
 

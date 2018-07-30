@@ -2,21 +2,22 @@ import * as React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { color } from 'src/constants'
 import { snackbar } from 'src/helpers'
-import { novelActions } from 'src/modules/novels'
+import { NovelsAction } from 'src/modules/novels'
+import { SettingAction } from 'src/modules/setting'
 
 interface Props {
-  novelPurge: typeof novelActions.novelPurge
+  action: NovelsAction & SettingAction
 }
 
-class Purge extends React.PureComponent<Props> {
-  handlePurge = () => {
+class Reset extends React.Component<Props> {
+  handleReset = () => {
     Alert.alert('小説データの初期化', 'この操作は取り消せません', [
-      { text: 'キャンセル', style: 'cancel', onPress: null },
+      { text: 'キャンセル', style: 'cancel' },
       {
         text: '初期化',
         style: 'destructive',
         onPress: () => {
-          this.props.novelPurge()
+          this.props.action.resetNovel()
           snackbar.success('データを初期化しました')
         }
       }
@@ -27,14 +28,12 @@ class Purge extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.description}>
-          <Text style={styles.message}>
-            すべての小説データの初期化を行います
-          </Text>
+          <Text style={styles.message}>すべての小説データの初期化を行います</Text>
           <Text style={styles.message}>この操作は取り消しできません</Text>
         </View>
-        <TouchableOpacity onPress={this.handlePurge}>
+        <TouchableOpacity onPress={this.handleReset}>
           <View style={styles.button}>
-            <Text style={styles.text}>purge</Text>
+            <Text style={styles.text}>reset</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -42,7 +41,7 @@ class Purge extends React.PureComponent<Props> {
   }
 }
 
-export default Purge
+export default Reset
 
 const styles = StyleSheet.create({
   container: {

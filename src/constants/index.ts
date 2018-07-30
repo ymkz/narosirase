@@ -5,9 +5,9 @@ export const constraint = {
   deviceHeight: Dimensions.get('window').height,
   deviceWidth: Dimensions.get('window').width,
   initialItemHeight: 75,
-  statusBarHeight: Constants.statusBarHeight,
+  statusBarHeight: Constants.statusBarHeight || 20,
   headerHeight: 40,
-  scrollOffset: Constants.statusBarHeight + 40
+  scrollOffset: Constants.statusBarHeight + 40 || 60
 }
 
 export const color = {

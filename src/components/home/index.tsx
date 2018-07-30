@@ -1,138 +1,118 @@
 import * as React from 'react'
 import { RefreshControl, StyleSheet, View } from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view'
-import Header from 'src/components/home/Header'
-import ItemHidden from 'src/components/home/ItemHidden'
-import ItemVisible from 'src/components/home/ItemVisible'
-import ListEmpty from 'src/components/home/ListEmpty'
-import ListSeparator from 'src/components/home/ListSeparator'
-import { color, constraint, narou } from 'src/constants'
-import {
-  responseToNovelData,
-  scrapeIndexPage,
-  sleep,
-  snackbar
-} from 'src/helpers'
-import { connector, RootAction, RootState } from 'src/modules'
-import { novelActions, NovelState, Status } from 'src/modules/novels'
+import DraggableFlatList from 'react-native-draggable-flatlist'
+import { connect } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
+import Header from 'src/components/Home/Header'
+import ItemVisible from 'src/components/Home/ItemVisible'
+import ListEmpty from 'src/components/Home/ListEmpty'
+import ListRefreshing from 'src/components/Home/ListRefreshing'
+import ListSeparator from 'src/components/Home/ListSeparator'
+import { color, narou } from 'src/constants'
+import { responseToNovelData, scrapeIndexPage, sleep, snackbar } from 'src/helpers'
+import { Store } from 'src/modules'
+import { NovelData, NovelIndex, novelsAction, NovelsAction, NovelState } from 'src/modules/novels'
+import { Status, statusAction, StatusAction } from 'src/modules/status'
 
 interface Props {
   novels: NovelState[]
-  novelPatch: typeof novelActions.novelPatch
-  novelRemove: typeof novelActions.novelRemove
+  status: Status
+  action: NovelsAction & StatusAction
 }
 
 interface State {
-  status: Status
   refreshing: boolean
-  refreshingItem: NovelState
 }
 
-class Home extends React.PureComponent<Props, State> {
+class Home extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      status: Status.reading,
-      refreshing: false,
-      refreshingItem: null
+      refreshing: false
     }
   }
 
   handleChangeStatus = (status: Status) => {
-    this.setState({ status })
+    this.props.action.patchStatus(status)
   }
 
   handleRefresh = async () => {
     this.setState({ refreshing: true })
-    const novels = this.props.novels.filter(
-      novel => novel.status === this.state.status
+    const novels: NovelState[] = this.props.novels.filter(
+      (novel: NovelState) => novel.status === this.props.status
     )
 
     for (const novel of novels) {
-      this.setState({ refreshingItem: novel })
       await sleep(narou.wait)
-      const api = `${narou.api}ncode=${novel.ncode}&out=json`
-      const url = `https://${narou.novel}/${novel.ncode}`
+
+      const api: string = `${narou.api}ncode=${novel.ncode}&out=json`
+      const url: string = `https://${narou.novel}/${novel.ncode}`
+
       try {
         const response = await fetch(api)
         const json = await response.json()
-        const data = responseToNovelData(json[1])
-        const index = await scrapeIndexPage(url)
-        const payload = {
+        const data: NovelData = responseToNovelData(json[1])
+        const index: NovelIndex = await scrapeIndexPage(url)
+        const payload: NovelState = {
           ...novel,
           ...data,
           index
         }
-        this.props.novelPatch(payload)
+        this.props.action.patchNovel(payload)
       } catch (error) {
         snackbar.error('小説の更新情報取得時にエラーが発生しました')
       }
     }
 
-    this.setState({ refreshing: false, refreshingItem: null })
+    this.setState({ refreshing: false })
     snackbar.success('小説を更新しました')
   }
 
+  handleMoveEnd = (props: DraggableMoveEnd<NovelState>) => {
+    this.props.action.sortNovel(props.data)
+  }
+
   render() {
-    const { novels, novelPatch, novelRemove } = this.props
-    const { status, refreshing, refreshingItem } = this.state
+    const { novels, status } = this.props
+    const { refreshing } = this.state
     return (
       <View style={styles.container}>
+        <ListRefreshing refreshing={refreshing} />
         <Header status={status} handleChangeStatus={this.handleChangeStatus} />
-        <SwipeListView
-          useFlatList
+        <DraggableFlatList
           data={novels.filter(novel => novel.status === status)}
           ListEmptyComponent={ListEmpty}
           ItemSeparatorComponent={ListSeparator}
-          keyExtractor={({ ncode }) => ncode}
-          rightOpenValue={-constraint.deviceWidth}
-          leftOpenValue={constraint.deviceWidth}
-          swipeToOpenPercent={16}
           refreshControl={
             novels.length ? (
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={this.handleRefresh}
-              />
+              <RefreshControl refreshing={refreshing} onRefresh={this.handleRefresh} />
             ) : null
           }
-          renderItem={({ item }: { item: NovelState }) => (
-            <ItemVisible
-              novel={item}
-              refreshing={
-                refreshing &&
-                refreshingItem &&
-                refreshingItem.ncode === item.ncode
-              }
-            />
-          )}
-          renderHiddenItem={({ item }: { item: NovelState }) => (
-            <ItemHidden
-              novel={item}
-              novelPatch={novelPatch}
-              novelRemove={novelRemove}
-            />
-          )}
+          renderItem={ItemVisible}
+          onMoveEnd={this.handleMoveEnd}
         />
       </View>
     )
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  novels: state.novels
+const mapStateToProps = (state: Store) => ({
+  novels: state.novels,
+  status: state.status
 })
 
-const mapDispatchToProps = (action: RootAction) => ({
-  novelPatch: action.novelActions.novelPatch,
-  novelRemove: action.novelActions.novelRemove
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  action: bindActionCreators({ ...novelsAction, ...statusAction }, dispatch)
 })
 
-export default connector(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: color.white
+    backgroundColor: color.white,
+    flex: 1
   }
 })

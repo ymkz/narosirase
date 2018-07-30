@@ -11,33 +11,30 @@ interface Props {
   move: () => void
 }
 
-class Mover extends React.PureComponent<Props> {
-  render() {
-    const { canMove, visible, prev, next, move } = this.props
-    if (!visible) {
-      return null
-    } else {
-      const text = !!prev ? '前のエピソードへ' : '次のエピソードへ'
-      return (
-        <TouchableOpacity style={styles.container} onPress={move}>
-          {prev && (
-            <Entypo
-              name="chevron-thin-up"
-              size={16}
-              style={canMove ? styles.active : styles.inactive}
-            />
-          )}
-          <Text style={canMove ? styles.active : styles.inactive}>{text}</Text>
-          {next && (
-            <Entypo
-              name="chevron-thin-down"
-              size={16}
-              style={canMove ? styles.active : styles.inactive}
-            />
-          )}
-        </TouchableOpacity>
-      )
-    }
+const Mover: React.SFC<Props> = ({ canMove, visible, prev, next, move }) => {
+  if (visible) {
+    const text: string = !!prev ? '前のエピソードへ' : '次のエピソードへ'
+    return (
+      <TouchableOpacity style={styles.container} onPress={move}>
+        {prev && (
+          <Entypo
+            name="chevron-thin-up"
+            size={16}
+            style={canMove ? styles.active : styles.inactive}
+          />
+        )}
+        <Text style={canMove ? styles.active : styles.inactive}>{text}</Text>
+        {next && (
+          <Entypo
+            name="chevron-thin-down"
+            size={16}
+            style={canMove ? styles.active : styles.inactive}
+          />
+        )}
+      </TouchableOpacity>
+    )
+  } else {
+    return null
   }
 }
 

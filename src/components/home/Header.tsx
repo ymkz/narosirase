@@ -1,35 +1,28 @@
 import { Entypo } from '@expo/vector-icons'
 import * as React from 'react'
-import {
-  ActionSheetIOS,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { ActionSheetIOS, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { color, constraint } from 'src/constants'
 import { capitalize } from 'src/helpers'
-import { Status } from 'src/modules/novels'
-import icon from 'src/resources/icon.png'
+import icon from 'src/images/icon.png'
+import { Status } from 'src/modules/status'
 
 interface Props {
-  status: string
-  handleChangeStatus: (status: string) => void
+  status: Status
+  handleChangeStatus: (status: Status) => void
 }
 
 const labels = [Status.reading, Status.pending, Status.archive]
 
-class Header extends React.PureComponent<Props> {
+class Header extends React.Component<Props> {
   handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         title: 'Select the novel status to display',
-        options: [...labels.map(label => capitalize(label)), 'Cancel'],
+        options: [...labels.map((label: Status) => capitalize(label)), 'Cancel'],
         cancelButtonIndex: labels.length
       },
-      index => {
+      (index: number) => {
         if (index < labels.length) {
           this.props.handleChangeStatus(labels[index])
         }
@@ -44,16 +37,9 @@ class Header extends React.PureComponent<Props> {
         <View style={styles.header}>
           <Image style={styles.image} source={icon} />
           <View style={styles.title}>
-            <TouchableOpacity
-              style={styles.touchable}
-              onPress={this.handlePress}
-            >
+            <TouchableOpacity style={styles.touchable} onPress={this.handlePress}>
               <Text style={styles.text}>{capitalize(status)}</Text>
-              <Entypo
-                name="chevron-small-down"
-                size={20}
-                color={color.darkBlack}
-              />
+              <Entypo name="chevron-small-down" size={20} color={color.darkBlack} />
             </TouchableOpacity>
           </View>
           <View style={styles.icons}>
@@ -64,12 +50,7 @@ class Header extends React.PureComponent<Props> {
               style={styles.icon}
               onPress={Actions.ADD}
             />
-            <Entypo
-              name="cog"
-              size={26}
-              color={color.darkBlack}
-              onPress={Actions.SETTING}
-            />
+            <Entypo name="cog" size={26} color={color.darkBlack} onPress={Actions.SETTING} />
           </View>
         </View>
       </View>

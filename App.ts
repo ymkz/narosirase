@@ -1,2 +1,2 @@
-export { default } from 'src'
+export { default } from './src'
 console.ignoredYellowBox = ['Remote debugger']

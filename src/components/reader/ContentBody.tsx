@@ -8,22 +8,11 @@ interface Props {
   setting: SettingState
 }
 
-class ContentBody extends React.PureComponent<Props> {
-  render() {
-    const { body, setting } = this.props
-    return (
-      <Text
-        style={[
-          styles.text,
-          { fontSize: setting.fontSize },
-          { lineHeight: setting.lineHeight }
-        ]}
-      >
-        {body}
-      </Text>
-    )
-  }
-}
+const ContentBody: React.SFC<Props> = ({ body, setting }) => (
+  <Text style={[styles.text, { fontSize: setting.fontSize }, { lineHeight: setting.lineHeight }]}>
+    {body}
+  </Text>
+)
 
 export default ContentBody
 

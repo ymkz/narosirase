@@ -1,28 +1,25 @@
 import * as React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { color } from 'src/constants'
-import { Chapter } from 'src/modules/novels'
+import { NovelChapter } from 'src/modules/novels'
 
 interface Props {
-  chapter: Chapter
+  chapter: NovelChapter
 }
 
-class NovelChapter extends React.PureComponent<Props> {
-  render() {
-    const { chapter } = this.props
-    if (chapter) {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.chapter}>{chapter.chapter}</Text>
-        </View>
-      )
-    } else {
-      return null
-    }
+const Chapter: React.SFC<Props> = ({ chapter }) => {
+  if (chapter) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.chapter}>{chapter.chapter}</Text>
+      </View>
+    )
+  } else {
+    return null
   }
 }
 
-export default NovelChapter
+export default Chapter
 
 const styles = StyleSheet.create({
   container: {

@@ -9,14 +9,7 @@ interface Props {
   novels: NovelState[]
 }
 
-type SharedAction = 'sharedAction' | 'dismissedAction'
-
-interface ShareResult {
-  action: SharedAction
-  activityType?: string
-}
-
-class Export extends React.PureComponent<Props> {
+class Export extends React.Component<Props> {
   handleExport = async () => {
     try {
       const result = (await Share.share({

@@ -1,73 +1,37 @@
 import * as React from 'react'
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native'
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import ItemRefreshing from 'src/components/home/ItemRefreshing'
-import { color, constraint } from 'src/constants'
+import { color } from 'src/constants'
 import { currentPageInfo, isLastEpisode, lastUpdateInfo } from 'src/helpers'
 import { NovelState } from 'src/modules/novels'
 
-interface Props {
-  novel: NovelState
-  refreshing: boolean
-}
+type Props = DraggableItem<NovelState>
 
-class ItemVisible extends React.PureComponent<Props> {
-  height: number = constraint.initialItemHeight
-
-  handleLayout = (e: LayoutChangeEvent) => {
-    this.height = e.nativeEvent.layout.height
-  }
-
-  handlePress = () => {
-    if (this.props.refreshing) {
-      return null
-    } else {
-      Actions.READER(this.props.novel.ncode)
-    }
-  }
-
-  render() {
-    const { novel, refreshing } = this.props
-    return (
-      <TouchableHighlight
-        underlayColor={color.lightGray}
-        onPress={this.handlePress}
-      >
-        <View
-          onLayout={this.handleLayout}
-          style={[
-            styles.container,
-            {
-              borderRightWidth: 8,
-              borderRightColor: isLastEpisode(novel)
-                ? color.transparent
-                : color.blue
-            }
-          ]}
-        >
-          {refreshing ? (
-            <ItemRefreshing height={this.height - 24} /> // container.paddingVertical
-          ) : (
-            <React.Fragment>
-              <Text style={styles.title}>{novel.title}</Text>
-              <Text style={styles.writer}>{novel.writer}</Text>
-              <View style={styles.info}>
-                <Text style={styles.currentPage}>{currentPageInfo(novel)}</Text>
-                <Text style={styles.lastUpdate}>{lastUpdateInfo(novel)}</Text>
-              </View>
-            </React.Fragment>
-          )}
-        </View>
-      </TouchableHighlight>
-    )
-  }
-}
+const ItemVisible: React.SFC<Props> = ({ move, moveEnd, item }) => (
+  <TouchableHighlight
+    underlayColor={color.lightGray}
+    onPress={() => Actions.READER(item.ncode)}
+    onLongPress={move}
+    onPressOut={moveEnd}
+  >
+    <View
+      style={[
+        styles.container,
+        {
+          borderRightWidth: 8,
+          borderRightColor: isLastEpisode(item) ? color.transparent : color.blue
+        }
+      ]}
+    >
+      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.writer}>{item.writer}</Text>
+      <View style={styles.info}>
+        <Text style={styles.currentPage}>{currentPageInfo(item)}</Text>
+        <Text style={styles.lastUpdate}>{lastUpdateInfo(item)}</Text>
+      </View>
+    </View>
+  </TouchableHighlight>
+)
 
 export default ItemVisible
 

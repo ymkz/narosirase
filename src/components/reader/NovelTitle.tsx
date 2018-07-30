@@ -7,19 +7,14 @@ interface Props {
   novel: NovelState
 }
 
-class Title extends React.PureComponent<Props> {
-  render() {
-    const { novel } = this.props
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{novel.title}</Text>
-        <View style={styles.wrapper}>
-          <Text style={styles.writer}>{novel.writer}</Text>
-        </View>
-      </View>
-    )
-  }
-}
+const Title: React.SFC<Props> = ({ novel }) => (
+  <View style={styles.container}>
+    <Text style={styles.title}>{novel.title}</Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.writer}>{novel.writer}</Text>
+    </View>
+  </View>
+)
 
 export default Title
 

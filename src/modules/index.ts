@@ -1,45 +1,30 @@
-import { connect } from 'react-redux'
 import { createStore } from 'redux'
-import { persistCombineReducers, persistStore } from 'redux-persist'
+import { persistCombineReducers, PersistConfig, persistStore } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
-import novels, { novelActions, NovelState } from 'src/modules/novels'
-import setting, { settingActions, SettingState } from 'src/modules/setting'
+import { novelsReducer, NovelState } from 'src/modules/novels'
+import { settingReducer, SettingState } from 'src/modules/setting'
+import { Status, statusReducer } from 'src/modules/status'
 
-const reducer = persistCombineReducers(
-  {
-    key: 'root',
-    storage,
-    whitelist: ['novels', 'setting']
-  },
-  {
-    novels,
-    setting
-  }
-)
-
-const actions = {
-  novelActions,
-  settingActions
+const config: PersistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['novels', 'setting', 'status']
 }
 
-export type RootAction = typeof actions
-export interface RootState {
+const reducers = {
+  novels: novelsReducer,
+  setting: settingReducer,
+  status: statusReducer
+}
+
+const persistedReducers = persistCombineReducers(config, reducers)
+
+export interface Store {
   novels: NovelState[]
   setting: SettingState
+  status: Status
 }
 
-export const store = createStore(reducer)
+export const store = createStore(persistedReducers)
+
 export const persistor = persistStore(store)
-export const connector = <
-  Props extends {} = {},
-  Actions extends {} = {},
-  Owns extends {} = {}
->(
-  mapStateToProps: (state: RootState, props?: Owns) => Props,
-  mapDispatchToProps?: (action: RootAction) => Actions
-) => {
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps ? mapDispatchToProps(actions) : {}
-  )
-}

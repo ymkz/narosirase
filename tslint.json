@@ -1,14 +1,16 @@
 {
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
     "no-console": false,
     "interface-name": false,
+    "jsx-no-lambda": false,
     "member-access": false,
     "object-literal-sort-keys": false,
     "prettier": [
       true,
       {
+        "printWidth": 100,
         "semi": false,
         "singleQuote": true
       }

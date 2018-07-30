@@ -1,23 +1,21 @@
 import * as React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { color, narou } from 'src/constants'
-import about from 'src/resources/about.png'
+import about from 'src/images/about.png'
 
-class About extends React.PureComponent {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Image style={styles.avatar} source={about} />
-        <View style={styles.information}>
-          <Text style={styles.message}>
-            このアプリは小説家になろうの小説更新を追跡するためのアプリです。
-            APIサーバーへの負荷低減のため、小説情報の更新を行う際に{narou.wait}ミリ秒/小説の遅延を設定しています。
-          </Text>
-        </View>
-      </View>
-    )
-  }
-}
+const About: React.SFC = () => (
+  <View style={styles.container}>
+    <Image style={styles.avatar} source={about} />
+    <View style={styles.information}>
+      <Text style={styles.message}>
+        このアプリは小説家になろうの小説更新を追跡するためのアプリです。
+        APIサーバーへの負荷低減のため、小説情報の更新を行う際に
+        {narou.wait}
+        ミリ秒/小説の遅延を設定しています。
+      </Text>
+    </View>
+  </View>
+)
 
 export default About
 

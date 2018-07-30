@@ -6,16 +6,11 @@ interface Props {
   subtitle: string
 }
 
-class ContentSubtitle extends React.PureComponent<Props> {
-  render() {
-    const { subtitle } = this.props
-    return (
-      <View style={styles.container}>
-        <Text style={styles.subtitle}>{subtitle}</Text>
-      </View>
-    )
-  }
-}
+const ContentSubtitle: React.SFC<Props> = ({ subtitle }) => (
+  <View style={styles.container}>
+    <Text style={styles.subtitle}>{subtitle}</Text>
+  </View>
+)
 
 export default ContentSubtitle
 

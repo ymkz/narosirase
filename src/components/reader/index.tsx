@@ -7,11 +7,13 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import Loading from 'src/components/reader/Loading'
-import Mover from 'src/components/reader/Mover'
-import PageContent from 'src/components/reader/PageContent'
-import PageIndex from 'src/components/reader/PageIndex'
-import PageShort from 'src/components/reader/PageShort'
+import { connect } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
+import Loading from 'src/components/Reader/Loading'
+import Mover from 'src/components/Reader/Mover'
+import PageContent from 'src/components/Reader/PageContent'
+import PageIndex from 'src/components/Reader/PageIndex'
+import PageShort from 'src/components/Reader/PageShort'
 import { color, constraint, narou } from 'src/constants'
 import {
   ableToMoveNext,
@@ -22,8 +24,8 @@ import {
   scrapeIndexPage,
   scrapeNovelContents
 } from 'src/helpers'
-import { connector, RootAction, RootState } from 'src/modules'
-import { novelActions, NovelState } from 'src/modules/novels'
+import { Store } from 'src/modules'
+import { novelsAction, NovelsAction, NovelState } from 'src/modules/novels'
 import { SettingState } from 'src/modules/setting'
 
 interface Owns {
@@ -33,7 +35,7 @@ interface Owns {
 interface Props {
   novel: NovelState
   setting: SettingState
-  novelPatch: typeof novelActions.novelPatch
+  action: NovelsAction
 }
 
 interface State {
@@ -43,8 +45,8 @@ interface State {
   scrollOffset: number
 }
 
-class Reader extends React.PureComponent<Props, State> {
-  constructor(props) {
+class Reader extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       loading: false,
@@ -55,7 +57,7 @@ class Reader extends React.PureComponent<Props, State> {
   }
 
   move = async (page: number) => {
-    const { novel, novelPatch } = this.props
+    const { novel, action } = this.props
     this.setState({
       loading: true,
       canMoveToPrev: false,
@@ -64,62 +66,53 @@ class Reader extends React.PureComponent<Props, State> {
     })
 
     if (page) {
-      const contents = await scrapeNovelContents(
-        `https://${narou.novel}/${novel.ncode}/${page}`
-      )
+      const contents = await scrapeNovelContents(`https://${narou.novel}/${novel.ncode}/${page}`)
       const payload = {
         ...novel,
         page,
         contents
       }
-      novelPatch(payload)
+      action.patchNovel(payload)
     } else {
-      const index = await scrapeIndexPage(
-        `https://${narou.novel}/${novel.ncode}`
-      )
+      const index = await scrapeIndexPage(`https://${narou.novel}/${novel.ncode}`)
       const payload = {
         ...novel,
         page,
         index
       }
-      novelPatch(payload)
+      action.patchNovel(payload)
     }
 
     this.setState({ loading: false })
   }
 
-  handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { novel, novelPatch } = this.props
+  handleScroll = (event?: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (event) {
+      const { novel, action } = this.props
 
-    if (e.nativeEvent.contentOffset.y > 0) {
-      novelPatch({
-        ...novel,
-        scrollOffset: e.nativeEvent.contentOffset.y
-      })
-    } else {
-      novelPatch({
-        ...novel,
-        scrollOffset: 0
-      })
-    }
+      if (event.nativeEvent.contentOffset.y > 0) {
+        action.patchNovel({
+          ...novel,
+          scrollOffset: event.nativeEvent.contentOffset.y
+        })
+      } else {
+        action.patchNovel({
+          ...novel,
+          scrollOffset: 0
+        })
+      }
 
-    if (
-      ableToMovePrev(e.nativeEvent) &&
-      !isShortStory(novel) &&
-      !isIndexPage(novel)
-    ) {
-      this.setState({ canMoveToPrev: true })
-    } else if (
-      ableToMoveNext(e.nativeEvent) &&
-      !isShortStory(novel) &&
-      !isLastEpisode(novel)
-    ) {
-      this.setState({ canMoveToNext: true })
-    } else {
-      this.setState({
-        canMoveToPrev: false,
-        canMoveToNext: false
-      })
+      if (ableToMovePrev(event.nativeEvent) && !isShortStory(novel) && !isIndexPage(novel)) {
+        this.setState({ canMoveToPrev: true })
+      } else if (
+        ableToMoveNext(event.nativeEvent) &&
+        !isShortStory(novel) &&
+        !isLastEpisode(novel)
+      ) {
+        this.setState({ canMoveToNext: true })
+      } else {
+        this.setState({ canMoveToPrev: false, canMoveToNext: false })
+      }
     }
   }
 
@@ -136,9 +129,15 @@ class Reader extends React.PureComponent<Props, State> {
   render() {
     const { novel, setting } = this.props
     const { loading, canMoveToPrev, canMoveToNext, scrollOffset } = this.state
+
     return (
-      <View style={styles.container}>
-        <StatusBar hidden />
+      <View
+        style={[
+          styles.container,
+          { paddingTop: setting.hideStatusbar ? 0 : constraint.statusBarHeight }
+        ]}
+      >
+        <StatusBar hidden={setting.hideStatusbar} />
         {loading ? (
           <Loading />
         ) : (
@@ -175,16 +174,19 @@ class Reader extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = (state: RootState, props: Owns) => ({
-  novel: state.novels.find(novel => novel.ncode === props.data),
+const mapStateToProps = (state: Store, props: Owns) => ({
+  novel: state.novels.find(novel => novel.ncode === props.data) as NovelState,
   setting: state.setting
 })
 
-const mapDispatchToProps = (action: RootAction) => ({
-  novelPatch: action.novelActions.novelPatch
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  action: bindActionCreators({ ...novelsAction }, dispatch)
 })
 
-export default connector(mapStateToProps, mapDispatchToProps)(Reader)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Reader)
 
 const styles = StyleSheet.create({
   container: {

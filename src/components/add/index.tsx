@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { Clipboard, NavState, StyleSheet, View, WebView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import Header from 'src/components/add/Header'
-import { color, constraint, narou } from 'src/constants/'
+import { connect } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
+import Header from 'src/components/Add/Header'
+import { color, constraint, narou } from 'src/constants'
 import {
   responseToNovelData,
   scrapeIndexPage,
@@ -10,15 +12,25 @@ import {
   snackbar,
   validToAddNovel
 } from 'src/helpers'
-import { connector, RootAction, RootState } from 'src/modules'
-import { novelActions, NovelState, Status } from 'src/modules/novels'
+import { Store } from 'src/modules'
+import {
+  NovelContent,
+  NovelData,
+  NovelIndex,
+  novelsAction,
+  NovelsAction,
+  NovelState
+} from 'src/modules/novels'
+import { SettingAction, settingAction, SettingState } from 'src/modules/setting'
+import { Status } from 'src/modules/status'
 import { parse } from 'url'
 
 interface Props {
   data: string
   routeName: string
   novels: NovelState[]
-  novelAdd: typeof novelActions.novelAdd
+  setting: SettingState
+  action: NovelsAction & SettingAction
 }
 
 interface State {
@@ -28,7 +40,7 @@ interface State {
   value: string
 }
 
-class Add extends React.PureComponent<Props, State> {
+class Add extends React.Component<Props, State> {
   web: React.RefObject<WebView> = React.createRef()
 
   constructor(props: Props) {
@@ -53,37 +65,36 @@ class Add extends React.PureComponent<Props, State> {
   }
 
   handleSubmitEditing = () => {
-    const { value } = this.state
-    if (RegExp(narou.novel).test(value)) {
-      Actions.WEB(value)
+    if (RegExp(narou.novel).test(this.state.value)) {
+      Actions.WEB(this.state.value)
     } else {
       snackbar.error('エラーが発生しました')
     }
   }
 
   handlePressClipboard = () => {
-    Actions.WEB(this.state.clipboard)
+    if (this.state.clipboard) {
+      Actions.WEB(this.state.clipboard)
+    }
   }
 
   handlePressAddNovel = async () => {
-    if (!this.state.valid) {
-      return
-    } else {
+    if (this.state.valid) {
       this.setState({ valid: false })
-      const splited = parse(this.props.data).pathname.split('/')
-      const ncode = splited[1]
-      const page = Number(splited[2]) || 0
-      const api = `${narou.api}ncode=${ncode}&out=json`
-      const url = `https://${narou.novel}/${ncode}`
+      const splited: string[] = parse(this.props.data).pathname.split('/')
+      const ncode: string = splited[1]
+      const page: number = Number(splited[2]) || 0
+      const api: string = `${narou.api}ncode=${ncode}&out=json`
+      const url: string = `https://${narou.novel}/${ncode}`
       try {
         const response = await fetch(api)
         const json = await response.json()
-        const data = responseToNovelData(json[1])
-        const index = await scrapeIndexPage(url)
-        const contents = await scrapeNovelContents(
+        const data: NovelData = responseToNovelData(json[1])
+        const index: NovelIndex = await scrapeIndexPage(url)
+        const contents: NovelContent = await scrapeNovelContents(
           `${url}${data.isShort ? '' : page === 0 ? '/1' : `/${page}`}`
         )
-        const scrollOffset = !page || data.isShort ? 0 : constraint.scrollOffset
+        const scrollOffset: number = !page || data.isShort ? 0 : constraint.scrollOffset
         const payload: NovelState = {
           ...data,
           page,
@@ -92,9 +103,11 @@ class Add extends React.PureComponent<Props, State> {
           scrollOffset,
           status: Status.reading
         }
-        this.props.novelAdd(payload)
+        this.props.action.addNovel(payload)
         snackbar.success('小説を追加しました')
-        Actions.popTo('HOME')
+        if (this.props.setting.backOnAdd) {
+          Actions.popTo('HOME')
+        }
       } catch (error) {
         snackbar.error('小説追加時にエラーが発生しました')
       }
@@ -103,8 +116,10 @@ class Add extends React.PureComponent<Props, State> {
 
   handleNavigationStateChange = ({ url, navigationType }: NavState) => {
     if (navigationType === 'click') {
-      this.web.current.stopLoading()
-      Actions.WEB(url)
+      if (this.web.current) {
+        this.web.current.stopLoading()
+        Actions.WEB(url)
+      }
     }
   }
 
@@ -134,15 +149,19 @@ class Add extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  novels: state.novels
+const mapStateToProps = (state: Store) => ({
+  novels: state.novels,
+  setting: state.setting
 })
 
-const mapDispatchToProps = (action: RootAction) => ({
-  novelAdd: action.novelActions.novelAdd
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  action: bindActionCreators({ ...novelsAction, ...settingAction }, dispatch)
 })
 
-export default connector(mapStateToProps, mapDispatchToProps)(Add)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Add)
 
 const styles = StyleSheet.create({
   container: {

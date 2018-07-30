@@ -3,9 +3,9 @@ import { DangerZone } from 'expo'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { color } from 'src/constants'
-import loading from 'src/resources/loading.json'
+import loading from 'src/json/loading.json'
 
-class Loading extends React.PureComponent {
+class Loading extends React.Component {
   animation: React.RefObject<DangerZone.Lottie> = React.createRef()
 
   componentDidMount() {
@@ -15,7 +15,7 @@ class Loading extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <DangerZone.Lottie ref={this.animation} source={loading} loop />
+        <DangerZone.Lottie ref={this.animation} source={loading} loop={true} />
       </View>
     )
   }

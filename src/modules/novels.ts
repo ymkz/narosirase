@@ -1,11 +1,8 @@
+import { Status } from 'src/modules/status'
 import { actionCreatorFactory } from 'typescript-fsa'
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 
-export enum Status {
-  reading = 'reading',
-  pending = 'pending',
-  archive = 'archive'
-}
+const actionCreator = actionCreatorFactory('novels')
 
 export interface NovelData {
   ncode: string
@@ -25,21 +22,21 @@ export interface NovelData {
   episodes: number
 }
 
-export interface Episode {
+export interface NovelEpisode {
   page: number
   subtitle: string
 }
 
-export interface Chapter {
+export interface NovelChapter {
   chapter: string
-  episodes: Episode[]
+  episodes: NovelEpisode[]
 }
 
-export interface Index {
-  chapters: Chapter[]
+export interface NovelIndex {
+  chapters: NovelChapter[]
 }
 
-export interface Content {
+export interface NovelContent {
   subtitle: string
   body: string
   foreword: string
@@ -48,42 +45,45 @@ export interface Content {
 }
 
 export interface NovelState extends NovelData {
-  index: Index
-  contents: Content
+  index: NovelIndex
+  contents: NovelContent
   scrollOffset: number
   status: Status
   page: number
 }
 
-const actionCreator = actionCreatorFactory('novels')
-const initialState: NovelState[] = []
+export const novelsInitialState: NovelState[] = []
 
-export const novelActions = {
-  novelPurge: actionCreator('PURGE'),
-  novelAdd: actionCreator<NovelState>('Add'),
-  novelPatch: actionCreator<NovelState>('PATCH'),
-  novelRemove: actionCreator<NovelState>('REMOVE'),
-  novelHydrate: actionCreator<NovelState[]>('HYDRATE')
+export const novelsAction = {
+  resetNovel: actionCreator('RESET'),
+  addNovel: actionCreator<NovelState>('ADD'),
+  sortNovel: actionCreator<NovelState[]>('SORT'),
+  patchNovel: actionCreator<NovelState>('PATCH'),
+  removeNovel: actionCreator<NovelState>('REMOVE'),
+  hydrateNovel: actionCreator<NovelState[]>('HYDRATE')
 }
 
-export default reducerWithInitialState(initialState)
-  .case(novelActions.novelPurge, () => initialState)
-  .case(novelActions.novelAdd, (state, payload) => {
+export type NovelsAction = typeof novelsAction
+
+export const novelsReducer = reducerWithInitialState(novelsInitialState)
+  .case(novelsAction.resetNovel, () => novelsInitialState)
+  .case(novelsAction.sortNovel, (_, payload) => payload)
+  .case(novelsAction.addNovel, (state, payload) => {
     if (!state.find(novel => novel.ncode === payload.ncode)) {
       return [payload, ...state]
     } else {
       return state
     }
   })
-  .case(novelActions.novelPatch, (state, payload) => {
-    return state.map(item => (item.ncode === payload.ncode ? payload : item))
-  })
-  .case(novelActions.novelRemove, (state, payload) => {
+  .case(novelsAction.patchNovel, (state, payload) =>
+    state.map(novel => (novel.ncode === payload.ncode ? payload : novel))
+  )
+  .case(novelsAction.removeNovel, (state, payload) => {
     return state.filter(item => item.ncode !== payload.ncode)
   })
-  .case(novelActions.novelHydrate, (state, payload) => {
-    return [...state, ...payload].filter(
-      (item, index, self) =>
-        self.map(novel => novel.ncode).indexOf(item.ncode) === index
+  .case(novelsAction.hydrateNovel, (state, payload) =>
+    [...state, ...payload].filter(
+      (item, index, self) => self.map(novel => novel.ncode).indexOf(item.ncode) === index
     )
-  })
+  )
+  .build()

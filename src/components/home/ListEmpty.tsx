@@ -2,9 +2,9 @@
 import { DangerZone } from 'expo'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
-import empty from 'src/resources/empty.json'
+import empty from 'src/json/empty.json'
 
-class ListEmpty extends React.PureComponent {
+class ListEmpty extends React.Component {
   animation: React.RefObject<DangerZone.Lottie> = React.createRef()
 
   componentDidMount() {
@@ -14,7 +14,7 @@ class ListEmpty extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <DangerZone.Lottie ref={this.animation} source={empty} loop />
+        <DangerZone.Lottie ref={this.animation} source={empty} loop={true} />
       </View>
     )
   }

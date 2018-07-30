@@ -15,63 +15,58 @@ interface Props {
   handlePressAddNovel: () => void
 }
 
-class Header extends React.PureComponent<Props> {
-  render() {
-    const {
-      root,
-      value,
-      valid,
-      clipboard,
-      handleChangeText,
-      handleSubmitEditing,
-      handlePressClipboard,
-      handlePressAddNovel
-    } = this.props
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Entypo
-            name="chevron-down"
-            size={28}
-            color={color.darkBlack}
-            onPress={() => Actions.popTo('HOME')}
-          />
-          <View style={styles.title}>
-            <TextInput
-              blurOnSubmit
-              value={value}
-              autoCorrect={false}
-              keyboardType="url"
-              autoCapitalize="none"
-              clearButtonMode="while-editing"
-              placeholder="小説のURLを入力して検索"
-              onChangeText={handleChangeText}
-              onSubmitEditing={handleSubmitEditing}
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.icons}>
-            {root && (
-              <Entypo
-                name="clipboard"
-                size={24}
-                color={clipboard ? color.darkBlack : color.darkGray}
-                style={styles.icon}
-                onPress={clipboard ? handlePressClipboard : null}
-              />
-            )}
-            <Entypo
-              name="paper-plane"
-              size={24}
-              color={valid ? color.darkBlack : color.darkGray}
-              onPress={valid ? handlePressAddNovel : null}
-            />
-          </View>
-        </View>
+const Header: React.SFC<Props> = ({
+  root,
+  value,
+  valid,
+  clipboard,
+  handleChangeText,
+  handleSubmitEditing,
+  handlePressClipboard,
+  handlePressAddNovel
+}) => (
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Entypo
+        name="chevron-down"
+        size={28}
+        color={color.darkBlack}
+        onPress={() => Actions.popTo('HOME')}
+      />
+      <View style={styles.title}>
+        <TextInput
+          blurOnSubmit={true}
+          value={value}
+          autoCorrect={false}
+          keyboardType="url"
+          autoCapitalize="none"
+          clearButtonMode="while-editing"
+          placeholder="小説のURLを入力して検索"
+          onChangeText={handleChangeText}
+          onSubmitEditing={handleSubmitEditing}
+          style={styles.input}
+        />
       </View>
-    )
-  }
-}
+      <View style={styles.icons}>
+        {root && (
+          <Entypo
+            name="clipboard"
+            size={24}
+            color={clipboard ? color.darkBlack : color.darkGray}
+            style={styles.icon}
+            onPress={handlePressClipboard}
+          />
+        )}
+        <Entypo
+          name="paper-plane"
+          size={24}
+          color={valid ? color.darkBlack : color.darkGray}
+          onPress={handlePressAddNovel}
+        />
+      </View>
+    </View>
+  </View>
+)
 
 export default Header
 

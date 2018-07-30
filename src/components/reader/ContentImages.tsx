@@ -5,24 +5,19 @@ interface Props {
   images: string[]
 }
 
-class ContentImages extends React.PureComponent<Props> {
-  render() {
-    const { images } = this.props
-    return (
-      <View style={styles.container}>
-        {images.map(image => (
-          <Image
-            key={image}
-            style={styles.image}
-            source={{
-              uri: image
-            }}
-          />
-        ))}
-      </View>
-    )
-  }
-}
+const ContentImages: React.SFC<Props> = ({ images }) => (
+  <View style={styles.container}>
+    {images.map((image: string) => (
+      <Image
+        key={image}
+        style={styles.image}
+        source={{
+          uri: image
+        }}
+      />
+    ))}
+  </View>
+)
 
 export default ContentImages
 

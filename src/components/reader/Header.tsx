@@ -9,38 +9,28 @@ interface Props {
   novel: NovelState
 }
 
-class Header extends React.PureComponent<Props> {
-  render() {
-    const { novel } = this.props
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Entypo
-            name="chevron-small-left"
-            size={32}
-            color={color.darkBlack}
-            style={styles.back}
-            onPress={() => Actions.popTo('HOME')}
-          />
-          <View style={styles.title}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-              {novel.title}
-            </Text>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.sub}>
-              {novel.isShort ? novel.writer : novel.contents.subtitle}
-            </Text>
-          </View>
-          <Entypo
-            name="list"
-            size={24}
-            color={color.darkBlack}
-            onPress={() => console.log('press')}
-          />
-        </View>
+const Header: React.SFC<Props> = ({ novel }) => (
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Entypo
+        name="chevron-small-left"
+        size={32}
+        color={color.darkBlack}
+        style={styles.back}
+        onPress={() => Actions.popTo('HOME')}
+      />
+      <View style={styles.title}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
+          {novel.title}
+        </Text>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.sub}>
+          {novel.isShort ? novel.writer : novel.contents.subtitle}
+        </Text>
       </View>
-    )
-  }
-}
+      <Entypo name="list" size={24} color={color.darkBlack} onPress={() => console.log('press')} />
+    </View>
+  </View>
+)
 
 export default Header
 

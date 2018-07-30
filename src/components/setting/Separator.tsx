@@ -2,7 +2,7 @@ import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { color } from 'src/constants'
 
-const Separator = () => <View style={styles.separator} />
+const Separator: React.SFC = () => <View style={styles.separator} />
 
 export default Separator
 

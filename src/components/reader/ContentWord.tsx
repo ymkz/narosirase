@@ -14,9 +14,12 @@ interface State {
   open: boolean
 }
 
-class ContentWord extends React.PureComponent<Props, State> {
-  state = {
-    open: this.props.expandWord
+class ContentWord extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      open: this.props.expandWord
+    }
   }
 
   handlePress = () => {

@@ -7,18 +7,13 @@ interface Props {
   novel: NovelState
 }
 
-class NovelAbstract extends React.PureComponent<Props> {
-  render() {
-    const { novel } = this.props
-    return (
-      <View style={styles.container}>
-        <Text style={styles.abstract}>{novel.abstract}</Text>
-      </View>
-    )
-  }
-}
+const Abstract: React.SFC<Props> = ({ novel }) => (
+  <View style={styles.container}>
+    <Text style={styles.abstract}>{novel.abstract}</Text>
+  </View>
+)
 
-export default NovelAbstract
+export default Abstract
 
 const styles = StyleSheet.create({
   container: {

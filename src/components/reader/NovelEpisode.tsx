@@ -1,30 +1,22 @@
 import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { color } from 'src/constants'
-import { Episode } from 'src/modules/novels'
+import { NovelEpisode } from 'src/modules/novels'
 
 interface Props {
-  episode: Episode
+  episode: NovelEpisode
   move: (page: number) => void
 }
 
-class NovelEpisode extends React.PureComponent<Props> {
-  render() {
-    const { episode, move } = this.props
-    return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => move(episode.page)}
-          style={styles.inner}
-        >
-          <Text style={styles.episode}>{episode.subtitle}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-}
+const Episode: React.SFC<Props> = ({ episode, move }) => (
+  <View style={styles.container}>
+    <TouchableOpacity onPress={() => move(episode.page)} style={styles.inner}>
+      <Text style={styles.episode}>{episode.subtitle}</Text>
+    </TouchableOpacity>
+  </View>
+)
 
-export default NovelEpisode
+export default Episode
 
 const styles = StyleSheet.create({
   container: {

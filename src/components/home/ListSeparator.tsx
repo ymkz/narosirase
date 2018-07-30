@@ -2,11 +2,7 @@ import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { color } from 'src/constants'
 
-class ListSeparator extends React.PureComponent {
-  render() {
-    return <View style={styles.separator} />
-  }
-}
+const ListSeparator: React.SFC = () => <View style={styles.separator} />
 
 export default ListSeparator
 

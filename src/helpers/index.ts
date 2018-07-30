@@ -3,7 +3,7 @@ import { NativeScrollEvent } from 'react-native'
 import cheerio from 'react-native-cheerio'
 import Snackbar from 'rn-snackbar'
 import { color, constraint, narou } from 'src/constants'
-import { Content, Index, NovelData, NovelState } from 'src/modules/novels'
+import { NovelContent, NovelData, NovelIndex, NovelState } from 'src/modules/novels'
 import { parse } from 'url'
 
 export const snackbar = {
@@ -45,18 +45,6 @@ export function lastUpdateInfo({ lastUpdatedAt }: NovelState): string {
   return `最終更新 ${dayjs(lastUpdatedAt).format('M月D日h時m分')}`
 }
 
-export function validToAddNovel(url: string, novels: NovelState[]) {
-  if (url) {
-    const isNarouNovelUrl: boolean = RegExp(narou.novel).test(url)
-    const isNewNovel: boolean = !novels.filter(
-      item => item.ncode === parse(url).pathname.split('/')[1]
-    ).length
-    return isNarouNovelUrl && isNewNovel
-  } else {
-    return false
-  }
-}
-
 export function isIndexPage({ page }: NovelState): boolean {
   return page === 0
 }
@@ -69,6 +57,18 @@ export function isShortStory({ isShort }: NovelState): boolean {
   return isShort
 }
 
+export function validToAddNovel(url: string, novels: NovelState[]) {
+  if (url) {
+    const isNarouNovelUrl: boolean = RegExp(narou.novel).test(url)
+    const isNewNovel: boolean = !novels.filter(
+      item => item.ncode === parse(url).pathname.split('/')[1]
+    ).length
+    return isNarouNovelUrl && isNewNovel
+  } else {
+    return false
+  }
+}
+
 export function ableToMovePrev({ contentOffset }: NativeScrollEvent): boolean {
   return contentOffset.y < -constraint.scrollOffset
 }
@@ -78,10 +78,7 @@ export function ableToMoveNext({
   layoutMeasurement,
   contentSize
 }: NativeScrollEvent): boolean {
-  return (
-    layoutMeasurement.height + contentOffset.y >
-    contentSize.height + constraint.scrollOffset
-  )
+  return layoutMeasurement.height + contentOffset.y > contentSize.height + constraint.scrollOffset
 }
 
 export function responseToNovelData(json: any): NovelData {
@@ -94,6 +91,7 @@ export function responseToNovelData(json: any): NovelData {
     isShort: json.novel_type === 2,
     isStop: json.isstop === 1,
     abstract: json.story,
+    // @ts-ignore
     genre: narou.genre[json.genre],
     keywords: json.keyword.split(' '),
     publishedAt: json.general_firstup,
@@ -104,17 +102,17 @@ export function responseToNovelData(json: any): NovelData {
   }
 }
 
-export async function scrapeIndexPage(url: string): Promise<Index> {
+export async function scrapeIndexPage(url: string): Promise<NovelIndex> {
   const response = await fetch(url)
   const html = await response.text()
   const scrape = cheerio.load(html)
   const chapters = scrape('.chapter_title')
-    .map((_, parentNode) => ({
+    .map((_: never, parentNode: CheerioElement) => ({
       chapter: scrape(parentNode).text(),
       episodes: scrape(parentNode)
         .nextUntil('.chapter_title')
         .children('.subtitle')
-        .map((__, childNode) => ({
+        .map((__: never, childNode: CheerioElement) => ({
           subtitle: scrape(childNode)
             .children()
             .text(),
@@ -132,7 +130,7 @@ export async function scrapeIndexPage(url: string): Promise<Index> {
     chapters.push({
       chapter: '',
       episodes: scrape('.subtitle')
-        .map((index, childNode) => ({
+        .map((index: number, childNode: CheerioElement) => ({
           subtitle: scrape(childNode)
             .children()
             .text(),
@@ -145,7 +143,7 @@ export async function scrapeIndexPage(url: string): Promise<Index> {
   return { chapters }
 }
 
-export async function scrapeNovelContents(url: string): Promise<Content> {
+export async function scrapeNovelContents(url: string): Promise<NovelContent> {
   const response = await fetch(url)
   const html = await response.text()
   const scrape = cheerio.load(html)
@@ -156,10 +154,10 @@ export async function scrapeNovelContents(url: string): Promise<Content> {
   const foreword = scrape('#novel_p').text()
   const afterword = scrape('#novel_a').text()
   const images = scrape('img')
-    .map((_, e) => scrape(e).attr('src'))
+    .map((_: never, node: CheerioElement) => scrape(node).attr('src'))
     .get()
-    .filter((_, index) => index > 1)
-    .map(imageUrl => `https:${imageUrl}`)
+    .filter((_: never, index: number) => index > 1)
+    .map((imageUrl: string) => `https:${imageUrl}`)
 
   return { subtitle, body, foreword, afterword, images }
 }

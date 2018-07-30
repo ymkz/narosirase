@@ -8,27 +8,27 @@ interface Props {
   novel: NovelState
 }
 
-class NovelUpdatedAt extends React.PureComponent<Props> {
-  render() {
-    const { novel } = this.props
-    const lastPostedAt = dayjs(novel.lastPostedAt).format('YYYY/M/D')
-    const lastUpdatedAt = dayjs(novel.lastUpdatedAt).format('YYYY/M/D')
-    return (
-      <View style={styles.container}>
-        <Text style={styles.index}>目次</Text>
-        <Text style={styles.timeinfo}>
-          <Text>
-            {novel.episodes}話&nbsp;{lastPostedAt}&nbsp;公開&nbsp;-&nbsp;{
-              lastUpdatedAt
-            }&nbsp;更新
-          </Text>
+const UpdatedAt: React.SFC<Props> = ({ novel }) => {
+  const lastPostedAt: string = dayjs(novel.lastPostedAt).format('YYYY/M/D')
+  const lastUpdatedAt: string = dayjs(novel.lastUpdatedAt).format('YYYY/M/D')
+  return (
+    <View style={styles.container}>
+      <Text style={styles.index}>目次</Text>
+      <Text style={styles.timeinfo}>
+        <Text>
+          {novel.episodes}
+          話&nbsp;
+          {lastPostedAt}
+          &nbsp;公開&nbsp;-&nbsp;
+          {lastUpdatedAt}
+          &nbsp;更新
         </Text>
-      </View>
-    )
-  }
+      </Text>
+    </View>
+  )
 }
 
-export default NovelUpdatedAt
+export default UpdatedAt
 
 const styles = StyleSheet.create({
   container: {

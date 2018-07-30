@@ -2,20 +2,16 @@ import * as React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { color } from 'src/constants'
 
-class Disclaimer extends React.PureComponent {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          <Text style={styles.strong}>Disclaimer</Text>
-          <Text>
-            「小説家になろう」は株式会社ヒナプロジェクトの登録商標であり、本アプリケーションは株式会社ヒナプロジェクトが提供するものではありません。
-          </Text>
-        </Text>
-      </View>
-    )
-  }
-}
+const Disclaimer: React.SFC = () => (
+  <View style={styles.container}>
+    <Text style={styles.message}>
+      <Text style={styles.strong}>Disclaimer</Text>
+      <Text>
+        「小説家になろう」は株式会社ヒナプロジェクトの登録商標であり、本アプリケーションは株式会社ヒナプロジェクトが提供するものではありません。
+      </Text>
+    </Text>
+  </View>
+)
 
 export default Disclaimer
 

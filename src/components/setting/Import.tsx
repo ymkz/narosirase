@@ -3,24 +3,25 @@ import * as React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { color } from 'src/constants'
 import { snackbar } from 'src/helpers'
-import { novelActions, NovelState } from 'src/modules/novels'
+import { NovelsAction, NovelState } from 'src/modules/novels'
+import { SettingAction } from 'src/modules/setting'
 
 interface Props {
-  novelHydrate: typeof novelActions.novelHydrate
+  action: NovelsAction & SettingAction
 }
 
-class Import extends React.PureComponent<Props> {
+class Import extends React.Component<Props> {
   handleImport = async () => {
     try {
       const picked = await DocumentPicker.getDocumentAsync()
       if (picked.type === 'cancel') {
         return
       } else if (picked.type === 'success') {
-        const fileUri = `${FileSystem.documentDirectory}import.json`
+        const fileUri: string = `${FileSystem.documentDirectory}import.json`
         const downloaded = await FileSystem.downloadAsync(picked.uri, fileUri)
-        const read = await FileSystem.readAsStringAsync(downloaded.uri)
+        const read: string = await FileSystem.readAsStringAsync(downloaded.uri)
         const json: NovelState[] = JSON.parse(read)
-        this.props.novelHydrate(json)
+        this.props.action.hydrateNovel(json)
         snackbar.success('小説データをインポートしました')
       } else {
         return
