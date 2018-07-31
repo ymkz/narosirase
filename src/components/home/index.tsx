@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { RefreshControl, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'

@@ -1,5 +1,8 @@
 {
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["src/json/*.json"]
+  },
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
     "no-console": false,
