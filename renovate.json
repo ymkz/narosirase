@@ -1,6 +1,7 @@
 {
   "automerge": true,
   "extends": ["config:base"],
+  "ignoreDeps": ["expo", "react", "react-native"],
   "major": {
     "automerge": false
   }
