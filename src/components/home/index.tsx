@@ -37,6 +37,10 @@ class Home extends React.Component<Props, State> {
   }
 
   handleRefresh = async () => {
+    if (!this.props.novels) {
+      return
+    }
+
     this.setState({ refreshing: true })
     const novels: NovelState[] = this.props.novels.filter(
       (novel: NovelState) => novel.status === this.props.status
@@ -83,12 +87,9 @@ class Home extends React.Component<Props, State> {
           data={novels.filter(novel => novel.status === status)}
           ListEmptyComponent={ListEmpty}
           ItemSeparatorComponent={ListSeparator}
-          refreshControl={
-            novels.length ? (
-              <RefreshControl refreshing={refreshing} onRefresh={this.handleRefresh} />
-            ) : null
-          }
+          refreshing={refreshing}
           renderItem={ItemVisible}
+          onRefresh={this.handleRefresh}
           onMoveEnd={this.handleMoveEnd}
         />
       </View>
